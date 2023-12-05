@@ -1,1 +1,50 @@
+* {
+  font-size: 20px;
+  color: black;
+  font-family: monospace;
+}
 
+.inputSlide {
+  position: absolute;
+  width: 50%;
+  left: 25%;
+  top: 15%;
+}
+
+.knowledgeElement {
+  background-color: #FFE77A;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.knowledgeElementTitle {
+  margin: 10px;
+  margin-bottom: 5px;
+}
+
+.textInput {
+  margin: 5px;
+  border: 1px solid black;
+}
+
+.nextButton {
+  background-color: #2C5F2D;
+  border: 1px solid #2C5F2D;
+  float: right;
+  color: white;
+}
+
+.nextButton:hover {
+  background-color: green;
+}
+
+.previousButton {
+  background-color: gray;
+  border: 1px solid gray;
+  float: left;
+  color: white;
+}
+
+.previousButton:hover {
+  background-color: rgb(100 100 100);
+}
