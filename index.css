@@ -12,7 +12,7 @@
 }
 
 .knowledgeElement {
-  background-color: #FFE77A;
+  background-color: #f0b754;
   border-radius: 10px;
   margin: 10px;
 }
@@ -28,8 +28,8 @@
 }
 
 .nextButton {
-  background-color: #2C5F2D;
-  border: 1px solid #2C5F2D;
+  background-color: #49ba41;
+  border: 1px solid #49ba41;
   float: right;
   color: white;
 }
@@ -47,4 +47,8 @@
 
 .previousButton:hover {
   background-color: rgb(100 100 100);
+}
+
+.selectInput {
+  margin: 10px;
 }
