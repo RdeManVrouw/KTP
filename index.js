@@ -81,6 +81,12 @@ function previousButton(){
   inputSlides[slideIndex].style.visibility = "visible";
 }
 
+/*
+This part acts like a 'setup'-function.
+It gets the elements ready for the user.
+ - Appropriate classes are given to appropriate elements
+ - Eventlisteners are added
+*/
 for (var i = 0; i < inputSlides.length; i++){
   if (i != slideIndex) inputSlides[i].style.visibility = "hidden";
   for (var j = 0; j < inputSlides[i].children.length; j++){
