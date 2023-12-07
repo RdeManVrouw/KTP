@@ -8,7 +8,15 @@
   <body></body>
 
   <div class="inputSlide">
-    <p>Personal Info</p>
+    <p>Full Name</p>
+    <div>
+      <p>First Name</p>
+      <input></input>
+    </div>
+    <div>
+      <p>Last Name</p>
+      <input></input>
+    </div>
     <div>
       <p>Gender</p>
       <select>
@@ -28,6 +36,11 @@
       <p>Date of Birth</p>
       <input placeholder="dd-mm-yyyy"></input>
     </div>
+    <button class="nextButton">NEXT</button>
+  </div>
+
+  <div class="inputSlide">
+    <p>Identity</p>
     <div>
       <p>IBAN</p>
       <input placeholder="XX00 XXXX 0000 0000 00"></input>
@@ -37,17 +50,46 @@
       <input></input>
     </div>
     <div>
+      <p>ID Expire Date</p>
+      <input></input>
+    </div>
+    <div>
       <p>Mobile</p>
       <input></input>
     </div>
+    <div>
+      <p>Email</p>
+      <input></input>
+    </div>
+    <button class="previousButton">PREVIOUS</button>
     <button class="nextButton">NEXT</button>
   </div>
 
   <div class="inputSlide">
-    <p>Employment Status</p>
+    <p>Employment</p>
     <div>
-      <p>Name</p>
-      <input></input>
+      <p>Employment Status</p>
+      <select>
+        <option value="Public Employee">Public Employee</option>
+        <option value="Private Employee">Private Employee</option>
+        <option value="Self Employed">Self Employed</option>
+        <option value="Unemployed">Unemployed</option>
+      </select>
+    </div>
+    <button class="previousButton">PREVIOUS</button>
+    <button class="nextButton">NEXT</button>
+  </div>
+
+  <div class="inputSlide">
+    <p>Education</p>
+    <div>
+      <p>Education</p>
+      <select>
+        <option value="High school">High school</option>
+        <option value="Backelor">Backelor</option>
+        <option value="Master">Master</option>
+        <option value="Other">Other</option>
+      </select>
     </div>
     <button class="previousButton">PREVIOUS</button>
     <button class="nextButton">NEXT</button>

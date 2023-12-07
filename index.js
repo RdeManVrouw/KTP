@@ -7,6 +7,22 @@ function recieveInput(e){
   userData[elem.name] = elem.value;
 }
 
+
+function isChar(chr){
+  var val = chr.charCodeAt();
+  return (val >= 97 && val <= 122) || (val >= 65 && val <= 90);
+}
+function isDigit(chr){
+  var val = chr.charCodeAt();
+  return val >= 48 && val <= 57;
+}
+function ageFromDate(str){
+    var ageDifMs = Date.now() - new Date(str).getTime();
+    var ageDate = new Date(ageDifMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
+// This function contains the rules for steps 2 and 3
 function isDataValid(){
   for (var i = 0; i < inputSlides[slideIndex].children.length; i++){
     if (inputSlides[slideIndex].children[i].tagName != "DIV") continue;
@@ -22,9 +38,26 @@ function isDataValid(){
         if (isNaN(new Date(str))){
           alert("'Date of Birth' invalid");
           return false;
+        } else {
+          var age = ageFromDate(str);
+          if (age < 18 || age > 65){
+            alert("Too old or too young");
+            return false;
+          }
+        }
+        break;
+      case "ID Expire Date":
+        if (isNaN(new Date(str))){
+          alert("'ID Expire Date' invalid");
+          return false;
         }
         break;
       case "IBAN":
+        str = str.replaceAll(" ", "");
+        if (str.length != 18 || !(isChar(str[0]) && isChar(str[1]) && isDigit(str[2]) && isDigit(str[3]) && isChar(str[4]) && isChar(str[5]) && isChar(str[6]) && isChar(str[7]) && isDigit(str[8]) && isDigit(str[9]) && isDigit(str[10]) && isDigit(str[11]) && isDigit(str[12]) && isDigit(str[13]) && isDigit(str[14]) && isDigit(str[15]) && isDigit(str[16]) && isDigit(str[17]))){
+          alert("'IBAN' invalid");
+          return false;
+        }
         break;
     }
   }
