@@ -8,7 +8,7 @@
   position: absolute;
   width: 50%;
   left: 25%;
-  top: 15%;
+  top: 10%;
 }
 
 .knowledgeElement {
@@ -25,6 +25,7 @@
 .textInput {
   margin: 5px;
   border: 1px solid black;
+  width: 50%;
 }
 
 .nextButton {
