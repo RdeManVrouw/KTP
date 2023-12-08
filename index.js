@@ -4,22 +4,22 @@ var userData = {};
 
 function recieveInput(e){
   var elem = e.target;
+  if (elem.tagName == "SELECT" && elem.multiple){
+    var str = [];
+    for (var i = 0; i < elem.options.length; i++){
+      if (elem.options[i].selected) str.push(elem.options[i].value);
+    }
+    userData[elem.name] = str.join();
+    return;
+  }
   userData[elem.name] = elem.value;
 }
 
-
-function isChar(chr){
-  var val = chr.charCodeAt();
-  return (val >= 97 && val <= 122) || (val >= 65 && val <= 90);
-}
-function isDigit(chr){
-  var val = chr.charCodeAt();
-  return val >= 48 && val <= 57;
-}
+// this code was copied from stack overflow
 function ageFromDate(str){
-    var ageDifMs = Date.now() - new Date(str).getTime();
-    var ageDate = new Date(ageDifMs);
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  var ageDifMs = Date.now() - new Date(str).getTime();
+  var ageDate = new Date(ageDifMs);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
 // This function contains the rules for steps 2 and 3
@@ -54,10 +54,25 @@ function isDataValid(){
         break;
       case "IBAN":
         str = str.replaceAll(" ", "");
-        if (str.length != 18 || !(isChar(str[0]) && isChar(str[1]) && isDigit(str[2]) && isDigit(str[3]) && isChar(str[4]) && isChar(str[5]) && isChar(str[6]) && isChar(str[7]) && isDigit(str[8]) && isDigit(str[9]) && isDigit(str[10]) && isDigit(str[11]) && isDigit(str[12]) && isDigit(str[13]) && isDigit(str[14]) && isDigit(str[15]) && isDigit(str[16]) && isDigit(str[17]))){
+        if (str.match("[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{4}[0-9]{10}") == null){
           alert("'IBAN' invalid");
           return false;
         }
+        break;
+      case "Mobile":
+        // this regex is copied from https://ihateregex.io/expr/phone/
+        if (str.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g) == null){
+          alert("'Mobile' invalid");
+          return false;
+        }
+        break;
+      case "Email":
+        if (str.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g) == null){
+          alert("'Email' invalid");
+          return false;
+        }
+        break;
+      case "ID Number":
         break;
     }
   }
