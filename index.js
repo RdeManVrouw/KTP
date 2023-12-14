@@ -22,7 +22,7 @@ function ageFromDate(str){
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
-// This function contains the rules for steps 2 and 3
+// This function contains the rules for the system up until this point
 function isDataValid(){
   for (var i = 0; i < inputSlides[slideIndex].children.length; i++){
     if (inputSlides[slideIndex].children[i].tagName != "DIV") continue;
@@ -60,6 +60,7 @@ function isDataValid(){
         }
         break;
       case "Mobile":
+        str = str.replaceAll(" ", "");
         // this regex is copied from https://ihateregex.io/expr/phone/
         if (str.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g) == null){
           alert("'Mobile' invalid");
@@ -73,6 +74,10 @@ function isDataValid(){
         }
         break;
       case "ID Number":
+        if (str.match(/[0-9]{6}[0-9]*/g) == null){
+          alert("'ID Number' invalid");
+          return false;
+        }
         break;
     }
   }
