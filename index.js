@@ -130,3 +130,15 @@ var previousButtons = document.getElementsByClassName("previousButton");
 for (butn of previousButtons) butn.addEventListener("click", previousButton);
 var nextButtons = document.getElementsByClassName("nextButton");
 for (butn of nextButtons) butn.addEventListener("click", nextButton);
+
+var prgm = Program.compile(knowledge_base_txt);
+console.log(prgm);
+if (prgm != null){
+  var message = new Pointer();
+  if (prgm.execute(message)){
+    console.log("execution completed");
+    console.log(prgm.parameters);
+  } else {
+    console.log("execution not completed: " + message.i);
+  }
+}

@@ -1,4 +1,3 @@
-var line;
 class Program {
   constructor(){
     this.goalIdentifiers = [];
@@ -26,7 +25,6 @@ class Program {
   }
 
   static compile(str){
-    line = 1;
     var program = new Program();
     var index = new Pointer();
     if (Program.acceptGoalBlock(str, index, program)){
@@ -37,7 +35,7 @@ class Program {
       }
       skipSpaces(str, index);
       if (index.i != str.length){
-        throw_error("compiler failure");
+        throw_error(str, index.i, "compiler failure");
         return null;
       }
       for (var i = 0; i < program.goalIdentifiers.length; i++){
@@ -49,13 +47,13 @@ class Program {
           }
         }
         if (!exists){
-          throw_error("GOAL-identifier '" + this.goalIdentifiers[i] + "' not defined");
+          throw_error(str, index.i, "GOAL-identifier '" + this.goalIdentifiers[i] + "' not defined");
           return null;
         }
       }
       return program;
     } else {
-      throw_error("no GOAL-block found");
+      throw_error(str, index.i, "no GOAL-block found");
       return null;
     }
   }
@@ -67,7 +65,7 @@ class Program {
       while (acceptNonKeyword(str, index, identifier)) program.goalIdentifiers.push(identifier.i);
       if (!acceptKeyword(str, index, "END")){
         index.i = temp;
-        throw_error("expected END after GOAL");
+        throw_error(str, index.i, "expected END after GOAL");
         return false;
       }
       return true;
@@ -123,23 +121,23 @@ class Block {
           } else {
             block.identifier = undefined;
             index.i = temp;
-            throw_error("expected SINGLE or MULTIPLE");
+            throw_error(str, index.i, "expected SINGLE or MULTIPLE");
             return false;
           }
           if (!acceptKeyword(str, index, "END")){
             block.type = undefined;
             block.identifier = undefined;
             index.i = temp;
-            throw_error("expected END")
+            throw_error(str, index.i, "expected END")
             return false;
           }
           block.datatype = datatype.i;
           return true;
         } else {
-          throw_error("expected END");
+          throw_error(str, index.i, "expected END");
         }
       } else {
-        throw_error("expected identifier after INPUT");
+        throw_error(str, index.i, "expected identifier after INPUT");
       }
     }
     if (acceptDatatype(str, index, datatype)){
@@ -149,7 +147,7 @@ class Block {
           var node = new Node();
           if (Node.acceptStatementList(str, index, node)){
             if (!acceptKeyword(str, index, "END")){
-              throw_error("expected END");
+              throw_error(str, index.i, "expected END");
               index.i = temp;
               return false;
             }
@@ -160,10 +158,10 @@ class Block {
             return true;
           }
         } else {
-          throw_error("expected BEGIN");
+          throw_error(str, index.i, "expected BEGIN");
         }
       } else {
-        throw_error("expected identifier");
+        throw_error(str, index.i, "expected identifier");
       }
     }
     index.i = temp;
@@ -221,7 +219,7 @@ class Node {
       if (!acceptKeyword(str, index, "END")){
         node.children = [];
         node.expr = undefined;
-        throw_error("expected END after IF-statement");
+        throw_error(str, index.i, "expected END after IF-statement");
         return false;
       }
       node.type = 0;
@@ -248,7 +246,7 @@ class Node {
         if (!acceptKeyword(str, index, "END")){
           node.expr = undefined;
           index.i = temp;
-          throw_error("expected END");
+          throw_error(str, index.i, "expected END");
           return false;
         }
         node.type = 1;
@@ -257,7 +255,7 @@ class Node {
       }
       node.expr = undefined;
       index.i = temp;
-      throw_error("RETURN ...");
+      throw_error(str, index.i, "RETURN ...");
       return false;
     }
     return false;
@@ -267,7 +265,7 @@ class Expr {
   constructor(value, type, children = []){
     this.children = children;
     this.value = value; // (name of the operator or variable) or the constant
-    this.type = type;  // operator, variable, number
+    this.type = type;  // operator, variable, number, string
   }
 
   evaluate(program){
@@ -314,6 +312,8 @@ class Expr {
         }
         return program.parameters[this.value];
       case 2:
+        return this.value;
+      case 3:
         return this.value;
     }
   }
@@ -491,6 +491,11 @@ class Expr {
       expr.value = item.i;
       return true;
     }
+    if (acceptString(str, index, item)){
+      expr.type = 3;
+      expr.value = item.i;
+      return true;
+    }
     index.i = temp;
     return false;
   }
@@ -500,15 +505,14 @@ class Pointer {
   constructor(){ this.i = 0; }
 }
 
-function throw_error(str){
-  console.log("Compiler ERROR: " + str + " on line " + line);
+function throw_error(str, index, message){
+  var line = 1;
+  for (var i = 0; i < index; i++) line += str[i] == '\n';
+  console.log("Compiler ERROR: " + message + " on line " + line);
 }
 
 function skipSpaces(str, index){
-  while (str[index.i] == ' ' || str[index.i] == '\t' || str[index.i] == '\n'){
-    line += str[index.i] == '\n';
-    index.i++;
-  }
+  while (str[index.i] == ' ' || str[index.i] == '\t' || str[index.i] == '\n') index.i++;
 }
 function match(str, index, token){
   if (str[index.i] == token){
@@ -558,6 +562,23 @@ function acceptNumber(str, index, item){
       }
       item.i += val;
     }
+    return true;
+  }
+  return false;
+}
+function acceptString(str, index, item){
+  if (str[index.i] == '"'){
+    index.i++;
+    item.i = "";
+    while (str[index.i] != '"'){
+      item.i += str[index.i];
+      index.i++;
+      if (index.i == str.length){
+        throw_error(str, index.i, "string has to end with '\"'");
+        return false;
+      }
+    }
+    index.i++;
     return true;
   }
   return false;

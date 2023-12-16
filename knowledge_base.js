@@ -5,10 +5,9 @@ goal
 end
 
 string A begin
-  if 2 == 2 then
-    return 5 end
+  if 2 == "3" then
+    return 1 end
   end
-  return 4 end
 end
 
 
