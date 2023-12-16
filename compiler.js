@@ -12,7 +12,7 @@ command         : RETURN expression END
 datatype        : NUMBER | STRING
 digit           : [0-9]
 character       : [a-z] | [A-Z]
-identifier      : ('_' | character) ['_' | character | digit]*
+identifier      : ('_' | character) ['_' | character | digit]*                          // an identifier cannot be a keyword
 binaryoperator  : '==' | '!=' | '>=' | '<=' | '>' | '<'
 integer         : [digit]*
 number          : integer '.' integer
@@ -27,6 +27,7 @@ Term4           : '(' expression ')'
                 | number
                 | string
                 | '-' Term4
+                | identifier
 */
 const keywords = ["GOAL", "END", "BEGIN", "STRING", "IF", "THEN", "ELSE", "NUMBER", "AND", "OR", "NOT", "RETURN", "INPUT", "MULTIPLE", "SINGLE"];
 
@@ -38,7 +39,7 @@ class Program {
     this.message;
   }
 
-  execute(msg){
+  execute(){
     for (var i = 0; i < this.goalIdentifiers.length; i++){
       if (this.parameters[this.goalIdentifiers[i]] != undefined) continue;
       for (var j = 0; j < this.blocks.length; j++){
@@ -79,7 +80,7 @@ class Program {
           }
         }
         if (!exists){
-          throw_error(str, index.i, "GOAL-identifier '" + this.goalIdentifiers[i] + "' not defined");
+          throw_error(str, index.i, "GOAL-identifier '" + program.goalIdentifiers[i] + "' not defined");
           return null;
         }
       }
@@ -525,6 +526,11 @@ class Expr {
     }
     if (acceptString(str, index, item)){
       expr.type = 3;
+      expr.value = item.i;
+      return true;
+    }
+    if (acceptNonKeyword(str, index, item)){
+      expr.type = 1;
       expr.value = item.i;
       return true;
     }

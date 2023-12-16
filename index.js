@@ -136,10 +136,10 @@ var prgm = Program.compile(knowledge_base_txt);
 console.log(prgm);
 if (prgm != null){
   var message = new Pointer();
-  if (prgm.execute(message)){
+  if (prgm.execute()){
     console.log("execution completed");
     console.log(prgm.parameters);
   } else {
-    console.log("execution not completed: " + message.i);
+    console.log("execution not completed: " + prgm.message);
   }
 }

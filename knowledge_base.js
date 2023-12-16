@@ -5,10 +5,12 @@ goal
 end
 
 string A begin
-  if -2 == 1 - 3 then
-    return 1 end
+  if -2 == B - 3 then
+    return "valid" end
   end
+  return "invalid" end
 end
 
+input number B end
 
 `;
