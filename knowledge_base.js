@@ -5,7 +5,7 @@ goal
 end
 
 string A begin
-  if 2 == "3" then
+  if -2 == 1 - 3 then
     return 1 end
   end
 end

@@ -1,3 +1,35 @@
+/*
+program         : goalblock [inferenceblock | inputblock]*
+goalblock       : GOAL [identifier]* END
+
+inputblock      : INPUT datatype identifier END
+                | INPUT NUMBER [identifier]+ (MULTIPLE | SINGLE) END
+inferenceblock  : datatype identifier BEGIN statementlist END
+statementlist   : [ifstatement | command]*
+ifstatement     : IF expression THEN statementlist [ELSE statementlist]? END
+command         : RETURN expression END
+
+datatype        : NUMBER | STRING
+digit           : [0-9]
+character       : [a-z] | [A-Z]
+identifier      : ('_' | character) ['_' | character | digit]*
+binaryoperator  : '==' | '!=' | '>=' | '<=' | '>' | '<'
+integer         : [digit]*
+number          : integer '.' integer
+string          : '"' <anything you want> '"'
+
+expression      : Term1 [(AND | OR) Term1]*
+Term1           : Term2 [binaryoperator Term2]*
+                | NOT Term1
+Term2           : Term3 [('+' | '-') Term3]*
+Term3           : Term4 [('*' | '/') Term4]*
+Term4           : '(' expression ')'
+                | number
+                | string
+                | '-' Term4
+*/
+const keywords = ["GOAL", "END", "BEGIN", "STRING", "IF", "THEN", "ELSE", "NUMBER", "AND", "OR", "NOT", "RETURN", "INPUT", "MULTIPLE", "SINGLE"];
+
 class Program {
   constructor(){
     this.goalIdentifiers = [];
@@ -496,6 +528,15 @@ class Expr {
       expr.value = item.i;
       return true;
     }
+    if (match(str, index, '-')){
+      var child = new Expr();
+      if (Expr.acceptTerm4(str, index, child)){
+        expr.value = '*';
+        expr.type = 0;
+        expr.children = [new Expr(-1, 2), child];
+        return true;
+      }
+    }
     index.i = temp;
     return false;
   }
@@ -521,7 +562,6 @@ function match(str, index, token){
   }
   return false;
 }
-const keywords = ["GOAL", "END", "BEGIN", "STRING", "IF", "THEN", "ELSE", "NUMBER", "AND", "OR", "NOT", "RETURN", "INPUT", "MULTIPLE", "SINGLE"];
 function isKeyword(identifier){
   return keywords.includes(identifier.toUpperCase());
 }
