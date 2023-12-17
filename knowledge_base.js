@@ -1,4 +1,4 @@
-const knowledge_base_txt = `
+const inference_engine_txt = `
 
 goal
   A

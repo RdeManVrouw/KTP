@@ -132,8 +132,7 @@ var nextButtons = document.getElementsByClassName("nextButton");
 for (butn of nextButtons) butn.addEventListener("click", nextButton);
 
 // example of how to compile a knowledge base
-var prgm = Program.compile(knowledge_base_txt);
-console.log(prgm);
+var prgm = Program.compile(inference_engine_txt);
 if (prgm != null){
   var message = new Pointer();
   if (prgm.execute()){

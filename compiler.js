@@ -37,18 +37,29 @@ class Program {
     this.blocks = [];
     this.parameters = {};
     this.message;
+    this.stack = [];
   }
 
   execute(){
-    for (var i = 0; i < this.goalIdentifiers.length; i++){
-      if (this.parameters[this.goalIdentifiers[i]] != undefined) continue;
+    this.message = undefined;
+    while (this.stack.length){
+      var current = this.stack[this.stack.length - 1];
+      if (this.parameters[current] != undefined){
+        this.stack.pop();
+        continue;
+      }
       for (var j = 0; j < this.blocks.length; j++){
-        if (this.blocks[j].containsIdentifier(this.goalIdentifiers[i])){
+        if (this.blocks[j].containsIdentifier(current)){
           var value = this.blocks[j].execute(this);
-          if (value == null){
-            return false;
-          } else {
-            this.parameters[this.goalIdentifiers[i]] = value;
+          switch (value){
+            case null:
+              if (this.message.includes(" ")) return false;
+              this.stack.push(this.message);
+              break;
+            case undefined:
+              console.log("inference block for identifier '" + this.blocks[j].identifier + "' returns nothing");
+              return false;
+            default: this.parameters[current] = value;
           }
           break;
         }
@@ -84,6 +95,7 @@ class Program {
           return null;
         }
       }
+      for (var i = program.goalIdentifiers.length - 1; i >= 0; i--) program.stack.push(program.goalIdentifiers[i]);
       return program;
     } else {
       throw_error(str, index.i, "no GOAL-block found");
@@ -119,13 +131,13 @@ class Block {
       case 0:
         return this.statementList.execute(prgm);
       case 1:
-        prgm.message = "input required";
+        prgm.message = "input " + this.datatype + " " + this.identifier;
         return null;
       case 2:
-        prgm.message = "input required";
+        prgm.message = "input " + this.datatype + " " + this.identifier.join(",") + " " + " single";
         return null;
       case 3:
-        prgm.message = "input required";
+        prgm.message = "input " + this.datatype + " " + this.identifier.join(",") + " " + " multiple";
         return null;
     }
   }
@@ -547,6 +559,7 @@ class Expr {
     return false;
   }
 }
+
 // javascript does not have pointers. We use this class as a replacement
 class Pointer {
   constructor(){ this.i = 0; }
