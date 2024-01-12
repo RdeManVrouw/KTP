@@ -31,6 +31,18 @@ Term4           : '(' expression ')'
 */
 const keywords = ["GOAL", "END", "BEGIN", "STRING", "IF", "THEN", "ELSE", "NUMBER", "AND", "OR", "NOT", "RETURN", "INPUT", "MULTIPLE", "SINGLE"];
 
+Array.prototype.copy = function (){
+  let output = [];
+  for (let i = 0; i < this.length; i++){
+    if ((typeof this[i]) == "object"){
+      output.push(this[i].copy());
+    } else {
+      output.push(this[i]);
+    }
+  }
+  return output;
+}
+
 class Program {
   constructor(){
     this.goalIdentifiers = [];
@@ -53,7 +65,7 @@ class Program {
           var value = this.blocks[j].execute(this);
           switch (value){
             case null:
-              if (this.message.includes(" ")) return false;
+              if ((typeof this.message) == "object") return false;
               this.stack.push(this.message);
               break;
             case undefined:
@@ -66,6 +78,14 @@ class Program {
       }
     }
     return true;
+  }
+
+  setFact(identifier, value){
+    if ((typeof identifier) == "object"){
+      for (var i = 0; i < identifier.length; i++) this.parameters[identifier[i]] = value[i];
+    } else {
+      this.parameters[identifier] = value;
+    }
   }
 
   static compile(str){
@@ -131,13 +151,13 @@ class Block {
       case 0:
         return this.statementList.execute(prgm);
       case 1:
-        prgm.message = "input " + this.datatype + " " + this.identifier;
+        prgm.message = {inputType: "input field", datatype: this.datatype, identifier: this.identifier}
         return null;
       case 2:
-        prgm.message = "input " + this.datatype + " " + this.identifier.join(",") + " " + " single";
+        prgm.message = {intputType: "select", identifiers: this.identifier.copy(), singleChoice: true};
         return null;
       case 3:
-        prgm.message = "input " + this.datatype + " " + this.identifier.join(",") + " " + " multiple";
+        prgm.message = {intputType: "select", identifiers: this.identifier.copy(), singleChoice: false};
         return null;
     }
   }

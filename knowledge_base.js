@@ -13,8 +13,7 @@ number interest_rate begin
   return 1.23 end
 end
 
-input number iban_valid end
-input number username_valid end
+input number iban_valid username_valid multiple end
 
 number amount_loan begin
   if not valid then
