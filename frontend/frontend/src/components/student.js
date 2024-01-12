@@ -7,39 +7,36 @@ import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Nav from 'react-bootstrap/Nav';
 import Home from './home';
+import Button from 'react-bootstrap/Button';
 
-const Student = ({ page }) => {
+const Student = () => {
 
-    const [page1, setPage] = useState(page);
-
-    useEffect(() => {
-        // console.log("pinfo:" + page1);
-    }
-    );
+    const [next, setNext] = useState(false);
+    const [prev, setPrev] = useState(false);
 
     const handleBack = () => {
-        setPage(page1 - 1);
+        setPrev(true);
     }
 
     const handleNext = () => {
-        setPage(page1 + 1);
+        setNext(true);
     }
 
     return (
         <>
-            {page1 === 3 ? <Home page={page1}></Home> : <>
+            {prev ? <Home></Home> : <>
                 <div className='font'><h1>Student</h1></div>
                 <Row className='mb-4' />
                 <Row>
                     <Col>
-                        <button className="contact-btn rounded-pill font" onClick={handleBack} size="sm">
+                        <Button className="contact-btn rounded-pill font" onClick={handleBack} size="md">
                             Back
-                        </button>
+                        </Button>
                     </Col>
                     <Col>
-                        <button className="contact-btn rounded-pill font" onClick={handleNext} size="sm">
+                        <Button className="contact-btn rounded-pill font" onClick={handleNext} size="md">
                             Next
-                        </button>
+                        </Button>
                     </Col>
                 </Row>
             </>

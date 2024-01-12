@@ -35,59 +35,51 @@ const Home = ({ page }) => {
     const [flag2, setflag2] = useState(false);
     const [flag3, setflag3] = useState(false);
 
-    const [page1, setPage] = useState(page);
-
-    useEffect(() => {
-        // console.log("home:" + page1);
-    }
-    );
+    const [prev, setPrev] = useState(false);
 
     const studentFlag = () => {
         setflag1(true);
-        setPage(page1 + 1);
         setShow(false);
     }
 
     const housingFlag = () => {
         setflag2(true);
-        setPage(page1 + 1);
         setShow2(false);
     }
 
     const carFlag = () => {
         setflag3(true);
-        setPage(page1 + 1);
         setShow3(false);
     }
 
     const handleBack = () => {
-        setPage(page1 - 1);
+        setPrev(true);
     }
 
     return (
         <>
-            {flag1 ? <Student page={page1}></Student> : <>
-                {flag2 ? <House page={page1}></House> : <>
-                    {flag3 ? <Car page={page1}></Car> : <>
-                        {page1 == 4 ? <Status page={page1}></Status> : <>
+            {flag1 ? <Student></Student> : <>
+                {flag2 ? <House></House> : <>
+                    {flag3 ? <Car></Car> : <>
+                        {prev ? <Status></Status> : <>
 
-                            <button className="contact-btn rounded-pill font" variant="primary" onClick={handleShow1}>
+                            <Button className="contact-btn rounded-pill font" size="lg" variant="primary" onClick={handleShow1}>
                                 Student Loans
-                            </button>
+                            </Button>
 
-                            <button className="contact-btn rounded-pill font mt-3" variant="primary" onClick={handleShow2}>
+                            <Button className="contact-btn rounded-pill font mt-3" size="lg" variant="primary" onClick={handleShow2}>
                                 Housing Loans
-                            </button>
+                            </Button>
 
-                            <button className="contact-btn rounded-pill font mt-3" variant="primary" onClick={handleShow3}>
-                                Student Loans
-                            </button>
+                            <Button className="contact-btn rounded-pill font mt-3" size="lg" variant="primary" onClick={handleShow3}>
+                                Caar Loans
+                            </Button>
 
                             <Row className='mt-5'>
                                 <Col>
-                                    <button className="contact-btn rounded-pill font" onClick={handleBack} size="sm">
+                                    <Button className="contact-btn rounded-pill font" onClick={handleBack} size="md">
                                         Back
-                                    </button>
+                                    </Button>
                                 </Col>
                             </Row>
                         </>}
@@ -95,18 +87,18 @@ const Home = ({ page }) => {
                 </>}
             </>}
 
-            <Modal className="font background" show={show1} scrollable="true" onHide={handleClose1}>
+            <Modal className="font" show={show1} scrollable="true" onHide={handleClose1}>
                 <Modal.Header closeButton>
                     <Modal.Title className="font">Student Loans</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="font">Woohoo, you are reading this text in a modal!</Modal.Body>
                 <Modal.Footer>
-                    <button className="contact-btn rounded-pill font" variant="secondary" onClick={handleClose1}>
+                    <Button className="contact-btn rounded-pill font" variant="secondary" onClick={handleClose1}>
                         Close
-                    </button>
-                    <button className="contact-btn rounded-pill font" variant="secondary" onClick={studentFlag}>
+                    </Button>
+                    <Button className="contact-btn rounded-pill font" variant="secondary" onClick={studentFlag}>
                         Continue
-                    </button>
+                    </Button>
                 </Modal.Footer>
             </Modal>
 
@@ -116,12 +108,12 @@ const Home = ({ page }) => {
                 </Modal.Header>
                 <Modal.Body className="font">Woohoo, you are reading this text in a modal!</Modal.Body>
                 <Modal.Footer>
-                    <button className="contact-btn rounded-pill font" variant="secondary" onClick={handleClose2}>
+                    <Button className="contact-btn rounded-pill font" variant="secondary" onClick={handleClose2}>
                         Close
-                    </button>
-                    <button className="contact-btn rounded-pill font" variant="secondary" onClick={housingFlag}>
+                    </Button>
+                    <Button className="contact-btn rounded-pill font" variant="secondary" onClick={housingFlag}>
                         Continue
-                    </button>
+                    </Button>
                 </Modal.Footer>
             </Modal>
 
@@ -131,12 +123,12 @@ const Home = ({ page }) => {
                 </Modal.Header>
                 <Modal.Body className="font">Woohoo, you are reading this text in a modal!</Modal.Body>
                 <Modal.Footer>
-                    <button className="contact-btn rounded-pill font" variant="secondary" onClick={handleClose3}>
+                    <Button className="contact-btn rounded-pill font" variant="secondary" onClick={handleClose3}>
                         Close
-                    </button>
-                    <button className="contact-btn rounded-pill font" variant="secondary" onClick={carFlag}>
+                    </Button>
+                    <Button className="contact-btn rounded-pill font" variant="secondary" onClick={carFlag}>
                         Continue
-                    </button>
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </>

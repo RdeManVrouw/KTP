@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Home from './home';
+import Salary from './salary';
 import Button from 'react-bootstrap/Button';
 import 'survey-core/defaultV2.min.css';
 import { Model } from 'survey-core';
@@ -14,7 +14,7 @@ import Form from 'react-bootstrap/Form';
 import Address from './home_address';
 
 
-const Status = ({ page }) => {
+const Status = () => {
 
     const [data, setData] = useState({
         employment: '',
@@ -26,13 +26,14 @@ const Status = ({ page }) => {
     };
 
     const validate = (data) => {
-        let errors = {};
+        let errors = false;
         if (!data.employment) {
-            errors.employment = 'Employment is required';
+            errors = true;
         }
         if (!data.status) {
-            errors.status = 'Status is required';
+            errors = true;
         }
+
         return errors;
     };
 
@@ -42,35 +43,30 @@ const Status = ({ page }) => {
     //         .then((data) => setMessage(data.message));
     // }, []);
 
-    const [page1, setPage] = useState(page);
 
-    useEffect(() => {
-        // console.log("pinfo:" + page1);
-    }
-    );
-
+    const [next, setNext] = useState(false);
+    const [prev, setPrev] = useState(false);
+  
     const handleBack = () => {
-        setPage(page1 - 1);
+      setPrev(true);
     }
 
     const handleNext = () => {
         let error = validate(data);
-        console.log("error:" + error);
-        if (error.employment || error.status) {
-            alert("Please fill all the fields");
+        if (error === false) {
+            setNext(true);
             return;
         }
-        setPage(page1 + 1);
+        alert("Please fill all the fields");
     }
 
     return (
         <>
 
-            {page1 === 3 ? <Address page={page1}></Address> : <>
+            {prev ? <Address></Address> : <>
 
-                {page1 === 5 ? <Home page={page1}></Home> :
+                {next ? <Salary></Salary> :
                     <>
-                        <h1 className='font'>Home Address Details</h1><br />
                         <Row className="g-2 mt-2 font">
                             <Col md>
                                 <FloatingLabel
@@ -100,12 +96,12 @@ const Status = ({ page }) => {
                         </Row>
                         <Row className='mt-5'>
                             <Col>
-                                <Button className="contact-btn rounded-pill font" onClick={handleBack} size="sm">
+                                <Button className="contact-btn rounded-pill font" onClick={handleBack} size="md">
                                     Back
                                 </Button>
                             </Col>
                             <Col>
-                                <Button className="contact-btn rounded-pill font" onClick={handleNext} size="sm">
+                                <Button className="contact-btn rounded-pill font" onClick={handleNext} size="md">
                                     Next
                                 </Button>
                             </Col>
@@ -119,4 +115,4 @@ const Status = ({ page }) => {
     );
 }
 
-export default Address;
+export default Status;

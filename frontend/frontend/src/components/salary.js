@@ -10,36 +10,19 @@ import 'survey-core/defaultV2.min.css';
 import { Model } from 'survey-core';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
-import Pinfo from './personal_info';
-import Status from './status';
+import Status from './home_address';
+import Expenses from './expenses';
 
 
-const Address = () => {
+const Salary = () => {
 
     const [data, setData] = useState({
-        address: '',
-        zip: '',
-        town: '',
+        salary: '',
+        income: '',
     });
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
-        console.log(data);
-    };
-
-    const validate = (data) => {
-        let errors = false;
-        if (!data.address) {
-            errors = true;
-        }
-        if (!data.zip) {
-            errors = true;
-        }
-        if (!data.town) {
-            errors = true;
-        }
-
-        return errors;
     };
 
     // useEffect(() => {
@@ -50,47 +33,44 @@ const Address = () => {
 
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
-  
+
+    const [show, setShow] = useState(false);
+
     const handleBack = () => {
-      setPrev(true);
+        setPrev(true);
     }
 
     const handleNext = () => {
-        let error = validate(data);
-        if (error === false) {
-            setNext(true);
+        if (data.salary === '' && data.income === '') {
+            setShow(true);
             return;
         }
-        alert("Please fill all the fields");
+        setNext(true);
     }
 
     return (
         <>
 
-            {prev ? <Pinfo ></Pinfo> : <>
+            {prev ? <Status></Status> : <>
 
-                {next ? <Status></Status> :
+                {next ? <Expenses></Expenses> :
                     <>
-                        <h1 className='font'>Home Address Details</h1><br />
+                        <h1 className='font'>Payslip</h1><br />
                         <Row className="g-2 mt-2 font">
                             <Col md>
-                                <FloatingLabel controlId="floatingTextarea" label="Street and Number" className='font'>
-                                    <Form.Control onChange={handleChange} type="email" name='address' placeholder="champ" />
+                                <FloatingLabel controlId="floatingTextarea" label="Salary" className='font'>
+                                    <Form.Control onChange={handleChange} type="number" name='salary' placeholder="champ" />
                                 </FloatingLabel>
                             </Col>
                         </Row>
-                        <Row className="g-2 mt-2">
-                            <Col md>
-                                <FloatingLabel controlId="floatingInputGrid" label="Zip">
-                                    <Form.Control onChange={handleChange} type="zip" name='zip' placeholder="111234" />
-                                </FloatingLabel>
-                            </Col>
-                            <Col md>
-                                <FloatingLabel controlId="floatingInputGrid" label="Town">
-                                    <Form.Control onChange={handleChange} type="name" name='town' placeholder="111234" />
-                                </FloatingLabel>
-                            </Col>
-                        </Row>
+                        {!show ? <> </> :
+                            <Row className="g-2 mt-2">
+                                <Col md>
+                                    <FloatingLabel controlId="floatingInputGrid" label="Income">
+                                        <Form.Control onChange={handleChange} type="income" name='income' placeholder="111234" />
+                                    </FloatingLabel>
+                                </Col>
+                            </Row>}
                         <Row className="g-2 mt-3">
                             <Col md>
                                 <Form.Group controlId="formFile" className="mb-3 font">
@@ -120,4 +100,4 @@ const Address = () => {
     );
 }
 
-export default Address;
+export default Salary;

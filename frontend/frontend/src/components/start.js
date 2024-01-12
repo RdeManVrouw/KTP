@@ -10,9 +10,10 @@ import Pinfo from './personal_info';
 import App from '../App';
 import Select from 'react-select'
 import countryList from 'react-select-country-list'
+import Button from 'react-bootstrap/Button';
 
 
-const Start = ({ page }) => {
+const Start = () => {
 
   const [country, setCountry] = useState('');
   const options = useMemo(() => countryList().getData(), [])
@@ -36,27 +37,23 @@ const Start = ({ page }) => {
       .then((data) => console.log(data));
   };
 
-  const [page1, setPage] = useState(page);
-
-  useEffect(() => {
-    // console.log("start:" + page1);
-  }
-  );
+  const [next, setNext] = useState(false);
+  const [prev, setPrev] = useState(false);
 
   const handleBack = () => {
-    setPage(page1 - 1);
+    setPrev(true);
   }
 
   const handleNext = () => {
     sendData();
-    setPage(page1 + 1);
+    setNext(true);
   }
 
   return (
     <>
 
-      {page1 === 0 ? <App page={page1}></App> : <>
-        {page1 === 2 ? <Pinfo page={page1}></Pinfo> :
+      {prev ? <App></App> : <>
+        {next ? <Pinfo></Pinfo> :
           <>
             <Row>
               <Col>
@@ -66,14 +63,14 @@ const Start = ({ page }) => {
             </Row>
             <Row className='mt-5'>
               <Col>
-                <button className="contact-btn rounded-pill font" onClick={handleBack} size="sm">
+                <Button className="contact-btn rounded-pill font" onClick={handleBack} size="md">
                   Back
-                </button>
+                </Button>
               </Col>
               <Col>
-                <button className="contact-btn rounded-pill font" onClick={handleNext} size="sm">
+                <Button className="contact-btn rounded-pill font" onClick={handleNext} size="md">
                   Next
-                </button>
+                </Button>
               </Col>
             </Row>
           </>

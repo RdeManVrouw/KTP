@@ -14,7 +14,7 @@ import Form from 'react-bootstrap/Form';
 import Address from './home_address';
 
 
-const Pinfo = ({ page }) => {
+const Pinfo = () => {
 
     const [data, setData] = useState({
         firstName: '',
@@ -29,18 +29,21 @@ const Pinfo = ({ page }) => {
     };
 
     const validate = (data) => {
-        let errors = {};
+        let errors = false;
         if (!data.firstName) {
-            errors.firstName = 'First Name is required';
+            errors = true;
         }
         if (!data.lastName) {
-            errors.lastName = 'Last Name is required';
+            errors = true;
         }
         if (!data.age) {
-            errors.age = 'Age is required';
+            errors = true;
+        }
+        if (data.gender === '') {
+            errors = true;
         }
         if (!data.id) {
-            errors.id = 'ID is required';
+            errors = true;
         }
 
         return errors;
@@ -52,22 +55,17 @@ const Pinfo = ({ page }) => {
     //         .then((data) => setMessage(data.message));
     // }, []);
 
-    const [page1, setPage] = useState(page);
-
-    useEffect(() => {
-        // console.log("pinfo:" + page1);
-    }
-    );
-
+    const [next, setNext] = useState(false);
+    const [prev, setPrev] = useState(false);
+  
     const handleBack = () => {
-        setPage(page1 - 1);
+      setPrev(true);
     }
 
     const handleNext = () => {
         let error = validate(data);
-        console.log("error:" + error);
-        if (error.firstName === undefined && error.lastName === undefined && error.age === undefined && error.id === undefined) {
-            setPage(page1 + 1);
+        if (error === false) {
+            setNext(true);
             return;
         }
         alert("Please fill all the fields");
@@ -76,9 +74,9 @@ const Pinfo = ({ page }) => {
     return (
         <>
 
-            {page1 === 1 ? <Start page={page1}></Start> : <>
+            {prev ? <Start></Start> : <>
 
-                {page1 === 3 ? <Address page={page1}></Address> :
+                {next ? <Address></Address> :
                     <>
                         <h1 className='font'>Personal Information</h1><br />
                         <Row className="g-2 mt-2">
@@ -119,12 +117,12 @@ const Pinfo = ({ page }) => {
                         </Row>
                         <Row className='mt-5'>
                             <Col>
-                                <Button className="contact-btn rounded-pill font" onClick={handleBack} size="sm">
+                                <Button className="contact-btn rounded-pill font" onClick={handleBack} size="md">
                                     Back
                                 </Button>
                             </Col>
                             <Col>
-                                <Button className="contact-btn rounded-pill font" onClick={handleNext} size="sm">
+                                <Button className="contact-btn rounded-pill font" onClick={handleNext} size="md">
                                     Next
                                 </Button>
                             </Col>
