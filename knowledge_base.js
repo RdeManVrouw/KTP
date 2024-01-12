@@ -1,21 +1,26 @@
 const inference_engine_txt = `
 
 goal
-  A
+  valid
+  amount_loan
 end
 
-string A begin
-  if -2 == C - 3
-  then
-    return "valid" end
+number valid begin
+  return iban_valid AND username_valid end
+end
+
+number interest_rate begin
+  return 1.23 end
+end
+
+input number iban_valid end
+input number username_valid end
+
+number amount_loan begin
+  if not valid then
+    return 0 end
   end
-  return "invalid" end
+  return 28872 end
 end
-
-number C begin
-  return B + 2 end
-end
-
-input number B end
 
 `;

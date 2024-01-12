@@ -134,7 +134,6 @@ for (butn of nextButtons) butn.addEventListener("click", nextButton);
 // example of how to compile a knowledge base
 var prgm = Program.compile(inference_engine_txt);
 if (prgm != null){
-  var message = new Pointer();
   if (prgm.execute()){
     console.log("execution completed");
     console.log(prgm.parameters);
