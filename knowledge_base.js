@@ -1,25 +1,32 @@
 const inference_engine_txt = `
 
 goal
-  valid
   amount_loan
 end
 
-number valid begin
-  return iban_valid AND username_valid end
-end
-
-number interest_rate begin
-  return 1.23 end
-end
-
-input number iban_valid username_valid multiple end
-
 number amount_loan begin
-  if not valid then
-    return 0 end
+  if typeLoan == "car loan" then return amount_loan_car end end
+  if typeLoan == "student loan" then return amount_loan_student end end
+  if typeLoan == "house loan" then return amount_loan_house end end
+end
+input typeLoan "car loan" "student loan" "house loan" end
+
+number amount_loan_car begin
+  if has_car_insurance then
+    return price_car - amount_car_insurance end
   end
-  return 28872 end
+  return price_car end
+end
+input number has_car_insurance end
+input number amount_car_insurance end
+input number price_car end
+
+number amount_loan_student begin
+  return 666 end
+end
+
+number amount_loan_house begin
+  return 666 end
 end
 
 `;

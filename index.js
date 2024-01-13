@@ -138,6 +138,7 @@ if (prgm != null){
     console.log("execution completed");
     console.log(prgm.parameters);
   } else {
-    console.log("execution not completed: " + prgm.message);
+    console.log("execution not completed:");
+    console.log(prgm.message);
   }
 }

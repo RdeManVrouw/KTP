@@ -3,13 +3,13 @@ program         : goalblock [inferenceblock | inputblock]*
 goalblock       : GOAL [identifier]* END
 
 inputblock      : INPUT datatype identifier END
-                | INPUT NUMBER [identifier]+ (MULTIPLE | SINGLE) END
+                | INPUT identifier [constant]+ END
 inferenceblock  : datatype identifier BEGIN statementlist END
 statementlist   : [ifstatement | command]*
 ifstatement     : IF expression THEN statementlist [ELSE statementlist]? END
 command         : RETURN expression END
 
-datatype        : NUMBER | STRING
+datatype        : NUMBER | STRING | BOOLEAN
 digit           : [0-9]
 character       : [a-z] | [A-Z]
 identifier      : ('_' | character) ['_' | character | digit]*                          // an identifier cannot be a keyword
@@ -24,12 +24,12 @@ Term1           : Term2 [binaryoperator Term2]*
 Term2           : Term3 [('+' | '-') Term3]*
 Term3           : Term4 [('*' | '/') Term4]*
 Term4           : '(' expression ')'
-                | number
-                | string
                 | '-' Term4
                 | identifier
+                | constant
+constant        : number | string | TRUE | FALSE
 */
-const keywords = ["GOAL", "END", "BEGIN", "STRING", "IF", "THEN", "ELSE", "NUMBER", "AND", "OR", "NOT", "RETURN", "INPUT", "MULTIPLE", "SINGLE"];
+const keywords = ["GOAL", "END", "BEGIN", "STRING", "IF", "THEN", "ELSE", "NUMBER", "BOOLEAN", "AND", "OR", "NOT", "RETURN", "INPUT", "TRUE", "FALSE"];
 
 Array.prototype.copy = function (){
   let output = [];
@@ -82,7 +82,7 @@ class Program {
 
   setFact(identifier, value){
     if ((typeof identifier) == "object"){
-      for (var i = 0; i < identifier.length; i++) this.parameters[identifier[i]] = value[i];
+      for (var i = 0; i < identifier.length; i++) this.parameters[identifier[i]] = value[i] ? 1 : 0;
     } else {
       this.parameters[identifier] = value;
     }
@@ -140,10 +140,11 @@ class Program {
 }
 class Block {
   constructor(){
-    this.type = undefined; // inference block, input block, choice single, choice multiple
-    this.datatype = undefined;
+    this.type = undefined; // inference block, input value, input choice
+    this.datatype = undefined; // "NUMBER", "STRING", "BOOLEAN"
     this.statementList = undefined;
     this.identifier = undefined;
+    this.choices = undefined; // contains the values of the choices (only used when type == 2)
   }
 
   execute(prgm){
@@ -151,59 +152,63 @@ class Block {
       case 0:
         return this.statementList.execute(prgm);
       case 1:
-        prgm.message = {inputType: "input field", datatype: this.datatype, identifier: this.identifier}
+        prgm.message = {inputType: "value", datatype: this.datatype, identifier: this.identifier}
         return null;
       case 2:
-        prgm.message = {intputType: "select", identifiers: this.identifier.copy(), singleChoice: true};
-        return null;
-      case 3:
-        prgm.message = {intputType: "select", identifiers: this.identifier.copy(), singleChoice: false};
+        prgm.message = {intputType: "choice", identifier: this.identifier, choices: this.choices.copy()};
         return null;
     }
   }
 
   containsIdentifier(identifier){
-    return (this.type == 2 || this.type == 3) && this.identifier.includes(identifier) || this.identifier == identifier;
+    return this.identifier == identifier;
   }
   static acceptBlock(str, index, block){
     var temp = index.i;
     var datatype = new Pointer();
-    if (acceptKeyword(str, index, "INPUT") && acceptDatatype(str, index, datatype)){
+    if (acceptKeyword(str, index, "INPUT")){
       var identifier = new Pointer();
-      if (acceptNonKeyword(str, index, identifier)){
-        if (acceptKeyword(str, index, "END")){
-          block.datatype = datatype.i;
+      if (acceptDatatype(str, index, datatype)){
+        if (acceptNonKeyword(str, index, identifier)){
+          if (!acceptKeyword(str, index, "END")){
+            throw_error(str, index.i, "missing END");
+            index.i = temp;
+            return false;
+          }
           block.type = 1;
+          block.datatype = datatype.i;
           block.identifier = identifier.i;
           return true;
-        } else if (datatype.i == "NUMBER"){
-          block.identifier = [identifier.i];
-          while (acceptNonKeyword(str, index, identifier)) block.identifier.push(identifier.i);
-          if (acceptKeyword(str, index, "MULTIPLE")){
-            block.type = 3;
-          } else if (acceptKeyword(str, index, "SINGLE")){
-            block.type = 2;
-          } else {
-            block.identifier = undefined;
-            index.i = temp;
-            throw_error(str, index.i, "expected SINGLE or MULTIPLE");
-            return false;
-          }
+        } else {
+          throw_error(str, index.i, "expected identifier");
+        }
+        index.i = temp;
+        return false;
+      }
+      if (acceptNonKeyword(str, index, identifier)){
+        var constant = new Pointer();
+        if (Expr.acceptConstant(str, index, constant)){
+          console.log(constant.i);
+          block.choices = [constant.i];
+          while (Expr.acceptConstant(str, index, constant)) block.choices.push(constant.i);
           if (!acceptKeyword(str, index, "END")){
-            block.type = undefined;
-            block.identifier = undefined;
+            block.choices = undefined;
+            throw_error(str, index.i, "missing END");
             index.i = temp;
-            throw_error(str, index.i, "expected END")
             return false;
           }
-          block.datatype = datatype.i;
+          block.type = 2;
+          block.identifier = identifier.i;
           return true;
         } else {
-          throw_error(str, index.i, "expected END");
+          throw_error(str, index.i, "has to contain at least 1 choice (constant value)");
         }
-      } else {
-        throw_error(str, index.i, "expected identifier after INPUT");
+        index.i = temp;
+        return false;
       }
+      throw_error(str, index.i, "'INPUT' has to be followed a datatype or an identifier");
+      index.i = temp;
+      return false;
     }
     if (acceptDatatype(str, index, datatype)){
       var identifier = new Pointer();
@@ -212,7 +217,7 @@ class Block {
           var node = new Node();
           if (Node.acceptStatementList(str, index, node)){
             if (!acceptKeyword(str, index, "END")){
-              throw_error(str, index.i, "expected END");
+              throw_error(str, index.i, "missing END");
               index.i = temp;
               return false;
             }
@@ -330,7 +335,7 @@ class Expr {
   constructor(value, type, children = []){
     this.children = children;
     this.value = value; // (name of the operator or variable) or the constant
-    this.type = type;  // operator, variable, number, string
+    this.type = type;  // operator, variable, constant
   }
 
   evaluate(program){
@@ -376,9 +381,7 @@ class Expr {
           return null;
         }
         return program.parameters[this.value];
-      case 2:
-        return this.value;
-      case 3:
+      default:
         return this.value;
     }
   }
@@ -551,13 +554,8 @@ class Expr {
       return false;
     }
     var item = new Pointer();
-    if (acceptNumber(str, index, item)){
+    if (Expr.acceptConstant(str, index, item)){
       expr.type = 2;
-      expr.value = item.i;
-      return true;
-    }
-    if (acceptString(str, index, item)){
-      expr.type = 3;
       expr.value = item.i;
       return true;
     }
@@ -574,6 +572,21 @@ class Expr {
         expr.children = [new Expr(-1, 2), child];
         return true;
       }
+    }
+    index.i = temp;
+    return false;
+  }
+  static acceptConstant(str, index, item){
+    var temp = index.i;
+    skipSpaces(str, index);
+    if (acceptNumber(str, index, item) || acceptString(str, index, item)) return true;
+    if (acceptKeyword(str, index, "true")){
+      item.i = true;
+      return true;
+    }
+    if (acceptKeyword(str, index, "false")){
+      item.i = false;
+      return true;
     }
     index.i = temp;
     return false;
@@ -697,6 +710,10 @@ function acceptDatatype(str, index, item){
   }
   if (acceptKeyword(str, index, "string")){
     item.i = "STRING";
+    return true;
+  }
+  if (acceptKeyword(str, index, "boolean")){
+    item.i = "BOOLEAN";
     return true;
   }
   return false;
