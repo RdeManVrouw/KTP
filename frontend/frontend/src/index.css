@@ -53,3 +53,22 @@
 .selectInput {
   margin: 10px;
 }
+
+.contact {
+  background-color: #E0AA22;
+  color: #fff;
+}
+
+.contact-btn {
+  background-color: #468612 !important;
+  color: #fff;
+  border: #131313 !important;
+}
+
+.contact-btn:hover {
+  background-color: #93e70b !important;
+  color: #fff;
+  border: #131313 !important;
+}
+
+
