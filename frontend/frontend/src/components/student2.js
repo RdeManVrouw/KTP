@@ -11,16 +11,22 @@ import Button from 'react-bootstrap/Button';
 import Calculator from './loan';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
+import Student from './student';
 
-const Car = () => {
+const Student2 = () => {
 
     const [data, setData] = useState({
-        price: '',
-        used: '',
+        rent: '',
+        housing: '',
     });
+
+    const [flag, setFlag] = useState(false);
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
+        if (data.housing === 'YES') {
+            setFlag(true);
+        }
         console.log(data);
     };
 
@@ -37,29 +43,31 @@ const Car = () => {
 
     return (
         <>
-            {prev ? <Home></Home> : <>
+            {prev ? <Student></Student> : <>
                 {next ? <Calculator></Calculator> : <>
-                    <div className='font'><h1>Car Loans</h1></div>
+                    <div className='font'><h1>Housing Situation</h1></div>
                     <Row className='mt-5'>
-                        <Col>
-                            <FloatingLabel controlId="floatingTextarea" label="Price" className='font'>
-                                <Form.Control onChange={handleChange} type="number" name='price' placeholder="" />
-                            </FloatingLabel>
-                        </Col>
-                    </Row>
-                    <Row className='mt-3'>
                         <Col>
                             <FloatingLabel
                                 controlId="floatingSelectGrid"
-                                label="New or Used"
+                                label="Housing"
                             >
-                                <Form.Select onClick={handleChange} name="used" aria-label="Floating label select example">
-                                    <option name="used" value="NO">New                                                   </option>
-                                    <option name="used" value="YES">Used                                                 </option>
+                                <Form.Select onClick={handleChange} name="housing" aria-label="Floating label select example">
+                                    <option name="housing" value="NO">With parents - no new rent</option>
+                                    <option name="housing" value="YES">Alone - new rent</option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>
                     </Row>
+                    {flag ? <>
+                        <Row className='mt-3'>
+                            <Col>
+                                <FloatingLabel controlId="floatingTextarea" label="Rent" className='font'>
+                                    <Form.Control onChange={handleChange} type="number" name='rent' placeholder="" />
+                                </FloatingLabel>
+                            </Col>
+                        </Row>
+                    </> : <></>}
                     <Row className='mt-5'>
                         <Col>
                             <Button className="contact-btn rounded-pill font" onClick={handleBack} size="md">
@@ -78,4 +86,4 @@ const Car = () => {
     );
 }
 
-export default Car;
+export default Student2;
