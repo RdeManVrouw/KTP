@@ -16,7 +16,7 @@ import Button from 'react-bootstrap/Button';
 const Start = () => {
 
   const [country, setCountry] = useState('');
-  const options = useMemo(() => countryList().getData(), [])
+  const options = useMemo(() => countryList().getData(), []);
 
   const changeHandler = country => {
     setCountry(country)
@@ -30,7 +30,8 @@ const Start = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        country: country,
+        name: "country",
+        value: country.label,
       }),
     })
       .then((res) => res.json())

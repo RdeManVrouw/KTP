@@ -4,8 +4,14 @@ goal
   amount_loan
 end
 
+boolean age_valid begin
+  return age >= 18 AND age < 65 end
+end
+
 number amount_loan begin
-  if typeLoan == "car loan" then return amount_loan_car end end
+  if typeLoan == "car loan" then
+    return amount_loan_car end
+  end
   if typeLoan == "student loan" then return amount_loan_student end end
   if typeLoan == "house loan" then return amount_loan_house end end
 end
@@ -30,3 +36,5 @@ number amount_loan_house begin
 end
 
 `;
+
+module.exports = inference_engine_txt;

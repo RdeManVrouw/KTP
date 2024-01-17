@@ -52,7 +52,7 @@ class Program {
     this.stack = [];
   }
 
-  execute(){
+  stepBackwardchain(){
     this.message = undefined;
     while (this.stack.length){
       var current = this.stack[this.stack.length - 1];
@@ -81,6 +81,7 @@ class Program {
   }
 
   setFact(identifier, value){
+    if (identifier == undefined || value == undefined) return;
     if ((typeof identifier) == "object"){
       for (var i = 0; i < identifier.length; i++) this.parameters[identifier[i]] = value[i] ? 1 : 0;
     } else {
@@ -155,7 +156,7 @@ class Block {
         prgm.message = {inputType: "value", datatype: this.datatype, identifier: this.identifier}
         return null;
       case 2:
-        prgm.message = {intputType: "choice", identifier: this.identifier, choices: this.choices.copy()};
+        prgm.message = {inputType: "choice", identifier: this.identifier, choices: this.choices.copy()};
         return null;
     }
   }
@@ -718,3 +719,5 @@ function acceptDatatype(str, index, item){
   }
   return false;
 }
+
+module.exports = Program;
