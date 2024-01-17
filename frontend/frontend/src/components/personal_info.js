@@ -56,7 +56,8 @@ const Pinfo = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                age: data.age,
+                name: "age",
+                value: data.age * 1,
             }),
         })
             .then((res) => res.json())

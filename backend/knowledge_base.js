@@ -1,7 +1,7 @@
 const inference_engine_txt = `
 
 goal
-  max_amount_loan
+  amount_loan
 end
 
 boolean age_valid begin

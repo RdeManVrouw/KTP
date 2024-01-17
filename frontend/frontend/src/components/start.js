@@ -21,7 +21,7 @@ const Start = () => {
     setCountry(country)
     console.log(country);
   }
-  
+
   const [next, setNext] = useState(false);
   const [prev, setPrev] = useState(false);
 
@@ -30,7 +30,6 @@ const Start = () => {
   }
 
   const handleNext = () => {
-    sendData();
     setNext(true);
   }
 

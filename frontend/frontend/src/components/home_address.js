@@ -42,26 +42,25 @@ const Address = () => {
         return errors;
     };
 
-    useEffect(() => {  
+    useEffect(() => {
         getData();
     });
 
-    const getData = () => {
-        fetch("http://localhost:3000/", {
+    const getData = async () => {
+        const res = await fetch("http://localhost:3000/", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
             },
-            params: { name: "age",
-                    value: data.age },
+            params: { name: "age" },
         })
-            .then((res) => res.json())
-            .then((data) => console.log(data));
+        const data = await res.json();
+        console.log(data);
     };
 
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
-  
+
     const handleBack = () => {
       setPrev(true);
     }
