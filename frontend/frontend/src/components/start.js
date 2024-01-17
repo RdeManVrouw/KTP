@@ -12,7 +12,6 @@ import Select from 'react-select'
 import countryList from 'react-select-country-list'
 import Button from 'react-bootstrap/Button';
 
-
 const Start = () => {
 
   const [country, setCountry] = useState('');

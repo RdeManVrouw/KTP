@@ -10,7 +10,7 @@ app.use(express.json());
 let prgm = Program.compile(inference_engine_txt);
 
 app.get('/', (req, res) => {
-  res.json({ message: "Hello from server!" });
+  res.json({ message: prgm.message, parameters: prgm.parameters });
 });
 
 app.post('/', (req, res) => {
@@ -20,9 +20,8 @@ app.post('/', (req, res) => {
     return;
   }
   console.log(prgm.message);
-  res.json({
-    "x": "y"
-  });
+  prgm.message.state = "execution incomplete";
+  res.json(prgm.message);
 });
 
 app.listen(3000, () => {
