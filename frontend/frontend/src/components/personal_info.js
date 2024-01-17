@@ -49,22 +49,32 @@ const Pinfo = () => {
         return errors;
     };
 
-    // useEffect(() => {
-    //     fetch("http://localhost:3000/")
-    //         .then((res) => res.json())
-    //         .then((data) => setMessage(data.message));
-    // }, []);
+    const sendData = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                age: data.age,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
 
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
-  
+
     const handleBack = () => {
-      setPrev(true);
+        setPrev(true);
     }
 
     const handleNext = () => {
         let error = validate(data);
         if (error === false) {
+            sendData();
             setNext(true);
             return;
         }

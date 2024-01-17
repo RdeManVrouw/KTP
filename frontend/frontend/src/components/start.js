@@ -21,22 +21,7 @@ const Start = () => {
     setCountry(country)
     console.log(country);
   }
-
-  const sendData = () => {
-    fetch("http://localhost:3000/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: "country",
-        value: country.label,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  };
-
+  
   const [next, setNext] = useState(false);
   const [prev, setPrev] = useState(false);
 

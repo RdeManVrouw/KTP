@@ -42,11 +42,22 @@ const Address = () => {
         return errors;
     };
 
-    // useEffect(() => {
-    //     fetch("http://localhost:3000/")
-    //         .then((res) => res.json())
-    //         .then((data) => setMessage(data.message));
-    // }, []);
+    useEffect(() => {  
+        getData();
+    });
+
+    const getData = () => {
+        fetch("http://localhost:3000/", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            params: { name: "age",
+                    value: data.age },
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
 
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
