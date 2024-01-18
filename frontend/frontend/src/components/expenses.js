@@ -29,6 +29,21 @@ const Expenses = () => {
         console.log(data);
     };
 
+    const sendData = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "expenses",
+                value: data.rent * 1 + data.loans * 1 + data.insurance * 1 + data.bills * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
     const validate = (data) => {
         let errors = false;
         if (!data.rent) {
@@ -64,6 +79,7 @@ const Expenses = () => {
     const handleNext = () => {
         let error = validate(data);
         if (error === false) {
+            sendData();
             setNext(true);
             return;
         }

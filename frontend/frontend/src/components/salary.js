@@ -21,15 +21,37 @@ const Salary = () => {
         income: '',
     });
 
+    const [flag, setFlag] = useState(false);
+
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
     };
 
-    // useEffect(() => {
-    //     fetch("http://localhost:3000/")
-    //         .then((res) => res.json())
-    //         .then((data) => setMessage(data.message));
-    // }, []);
+    const getData = async () => {
+        const res = await fetch("http://localhost:3000/", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const data = await res.json();
+        console.log(data);
+    };
+
+    const sendData = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "age",
+                value: data.age * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
 
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);

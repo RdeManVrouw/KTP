@@ -13,12 +13,21 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import Address from './home_address';
 
+// email verification regex 
+const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+
 
 const Status = () => {
 
     const [data, setData] = useState({
+        email: '',
         employment: '',
         status: '',
+    });
+
+    const [error, setError] = useState({
+        error: false,
+        email_error: false,
     });
 
     const handleChange = (e) => {
@@ -26,34 +35,54 @@ const Status = () => {
     };
 
     const validate = (data) => {
-        let errors = false;
+        error.error = false;
+        error.email_error = false;
+        if (!data.email) {
+            error.error = true;
+        }
+        if (data.email !== '' && !emailRegex.test(data.email)) {
+            error.email_error = true;
+        }
         if (!data.employment) {
-            errors = true;
+            error.error = true;
         }
         if (!data.status) {
-            errors = true;
+            error.error = true;
         }
-
-        return errors;
     };
 
-    // useEffect(() => {
-    //     fetch("http://localhost:3000/")
-    //         .then((res) => res.json())
-    //         .then((data) => setMessage(data.message));
-    // }, []);
+    const sendData = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "employment",
+                value: data.employment,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
 
 
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
-  
+
     const handleBack = () => {
-      setPrev(true);
+        setPrev(true);
     }
 
     const handleNext = () => {
-        let error = validate(data);
-        if (error === false) {
+        validate(data);
+        if (error.error === false) {
+            if(error.email_error === true){
+                //show an example
+                alert("Please enter a valid email address\nExample: " + emailRegex);
+                return;
+            }
+            sendData();
             setNext(true);
             return;
         }
@@ -69,6 +98,13 @@ const Status = () => {
                     <>
                         <Row className="g-2 mt-2 font">
                             <Col md>
+                                <FloatingLabel controlId="floatingInputGrid" label="Email">
+                                    <Form.Control onChange={handleChange} type="email" name='email' placeholder="champ" />
+                                </FloatingLabel>
+                            </Col>
+                        </Row>
+                        <Row className="g-2 mt-3">
+                            <Col md>
                                 <FloatingLabel
                                     controlId="floatingSelectGrid"
                                     label="Gender"
@@ -80,8 +116,6 @@ const Status = () => {
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
-                        </Row>
-                        <Row className="g-2 mt-2">
                             <Col md>
                                 <FloatingLabel
                                     controlId="floatingSelectGrid"

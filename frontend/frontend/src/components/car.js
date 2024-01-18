@@ -24,6 +24,29 @@ const Car = () => {
         console.log(data);
     };
 
+    const validate = () => {
+        if (!data.price) {
+            return false;
+        }
+        if (!data.used) {
+            return false;
+        }
+        return true;
+    };
+
+    const sendData = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
 
@@ -32,6 +55,11 @@ const Car = () => {
     }
 
     const handleNext = () => {
+        if (!validate()) {
+            alert("Please fill all the fields");
+            return;
+        }
+        sendData();
         setNext(true);
     }
 

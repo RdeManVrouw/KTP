@@ -8,17 +8,20 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Nav from 'react-bootstrap/Nav';
 import Home from './home';
 import Button from 'react-bootstrap/Button';
-import Student2 from './student2';
+import Calculator from './loan';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
+import House3 from './house3';
+import House from './house';
 
-const Student = () => {
+const House2 = () => {
 
     const [data, setData] = useState({
-        mother_income: '',
-        father_income: '',
-        tution_fees: '',
+        guarantor: '',
+        name: '',
     });
+
+    const [flag, setFlag] = useState(false);
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
@@ -26,13 +29,7 @@ const Student = () => {
     };
 
     const validate = () => {
-        if (!data.mother_income) {
-            return false;
-        }
-        if (!data.father_income) {
-            return false;
-        }
-        if (!data.tution_fees) {
+        if (!data.guarantor) {
             return false;
         }
         return true;
@@ -45,23 +42,8 @@ const Student = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "total_income",
-                value: data.father_income * 1 + data.mother_income * 1,
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => console.log(data));
-    };
-
-    const sendData2 = () => {
-        fetch("http://localhost:3000/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: "tution",
-                value: data.tution_fees * 1,
+                name: "guarantor",
+                value: data.guarantor,
             }),
         })
             .then((res) => res.json())
@@ -76,37 +58,34 @@ const Student = () => {
     }
 
     const handleNext = () => {
-        if (validate() === false) {
-            alert("Please fill in all the fields");
+        if (!validate()) {
+            alert("Please fill all the fields");
+            return;
+        }
+        if (data.guarantor === 'YES') {
+            setFlag(true);
             return;
         }
         sendData();
-        sendData2();
         setNext(true);
     }
 
     return (
         <>
-            {prev ? <Home></Home> : <>
-                {next ? <Student2></Student2> :
-                    <>
-                        <div className='font'><h1>Student Loans</h1></div>
+            {prev ? <House></House> : <>
+                {flag ? <House3></House3> : <>
+                    {next ? <Calculator></Calculator> : <>
+                        <div className='font'><h1>Housing</h1></div>
                         <Row className='mt-5'>
                             <Col>
-                                <FloatingLabel controlId="floatingTextarea" label="Mother's Salary" className='font'>
-                                    <Form.Control onChange={handleChange} type="number" name='mother_income' placeholder="" />
-                                </FloatingLabel>
-                            </Col>
-                            <Col>
-                                <FloatingLabel controlId="floatingTextarea" label="Father's Salary" className='font'>
-                                    <Form.Control onChange={handleChange} type="number" name='father_income' placeholder="" />
-                                </FloatingLabel>
-                            </Col>
-                        </Row>
-                        <Row className='mt-3'>
-                            <Col>
-                                <FloatingLabel controlId="floatingTextarea" label="Tution Fees" className='font'>
-                                    <Form.Control onChange={handleChange} type="number" name='tution_fees' placeholder="" />
+                                <FloatingLabel
+                                    controlId="floatingSelectGrid"
+                                    label="Do you have a guarantor?"
+                                >
+                                    <Form.Select onClick={handleChange} name="guarantor" aria-label="Floating label select example">
+                                        <option name="guarantor" value="YES">Yes                                                   </option>
+                                        <option name="guarantor" value="NO">No                                                 </option>
+                                    </Form.Select>
                                 </FloatingLabel>
                             </Col>
                         </Row>
@@ -123,9 +102,10 @@ const Student = () => {
                             </Col>
                         </Row>
                     </>}
+                </>}
             </>}
         </>
     );
 }
 
-export default Student;
+export default House2;

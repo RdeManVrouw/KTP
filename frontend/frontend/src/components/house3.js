@@ -11,7 +11,8 @@ import 'survey-core/defaultV2.min.css';
 import { Model } from 'survey-core';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
-import Address from './home_address';
+import House2 from './house2';
+import Calculator from './loan';
 
 
 const Pinfo = () => {
@@ -20,8 +21,9 @@ const Pinfo = () => {
         firstName: '',
         lastName: '',
         age: '',
-        gender: '',
         id: '',
+        salary: '',
+        expenses: '',
     });
 
     const [error, setError] = useState({
@@ -48,7 +50,10 @@ const Pinfo = () => {
         if (!data.id) {
             error.error = true;
         }
-        if (!data.gender) {
+        if (!data.salary) {
+            error.error = true;
+        }
+        if (!data.expenses) {
             error.error = true;
         }
         if (data.age < 18 || data.age > 65) {
@@ -71,6 +76,36 @@ const Pinfo = () => {
             .then((data) => console.log(data));
     };
 
+    const sendData2 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "salary_guarantor",
+                value: data.salary * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData3 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "expenses_guarantor",
+                value: data.expenses * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
 
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
@@ -87,6 +122,8 @@ const Pinfo = () => {
                 return;
             }
             sendData();
+            sendData2();
+            sendData3();
             setNext(true);
             return;
         }
@@ -96,11 +133,10 @@ const Pinfo = () => {
     return (
         <>
 
-            {prev ? <Start></Start> : <>
-
-                {next ? <Address></Address> :
+            {prev ? <House2></House2> : <>
+                {next ? <Calculator></Calculator> :
                     <>
-                        <h1 className='font'>Personal Information</h1><br />
+                        <h1 className='font'>Personal Information of Guarantor</h1><br />
                         <Row className="g-2 mt-2">
                             <Col md>
                                 <FloatingLabel controlId="floatingInputGrid" label="First Name">
@@ -115,25 +151,25 @@ const Pinfo = () => {
                         </Row>
                         <Row className="g-2 mt-3">
                             <Col md>
-                                <FloatingLabel controlId="floatingInputGrid" label="ID">
-                                    <Form.Control onChange={handleChange} type="id" name='id' placeholder="111234" />
-                                </FloatingLabel>
-                            </Col>
-                            <Col md>
                                 <FloatingLabel controlId="floatingInputGrid" label="Age">
-                                    <Form.Control onChange={handleChange} type="age" name="age" placeholder="18+" />
+                                    <Form.Control onChange={handleChange} type="number" name='age' placeholder="111234" />
                                 </FloatingLabel>
                             </Col>
                             <Col md>
-                                <FloatingLabel
-                                    controlId="floatingSelectGrid"
-                                    label="Gender"
-                                >
-                                    <Form.Select onClick={handleChange} name="gender" aria-label="Floating label select example">
-                                        <option name="gender" value="Male">Male</option>
-                                        <option name="gender" value="Female">Female</option>
-                                        <option name="gender" value="Other">Other</option>
-                                    </Form.Select>
+                                <FloatingLabel controlId="floatingInputGrid" label="ID">
+                                    <Form.Control onChange={handleChange} type="id" name="id" placeholder="18+" />
+                                </FloatingLabel>
+                            </Col>
+                        </Row>
+                        <Row className="g-2 mt-3">
+                            <Col md>
+                                <FloatingLabel controlId="floatingInputGrid" label="Salary or Income">
+                                    <Form.Control onChange={handleChange} type="number" name='salary' placeholder="111234" />
+                                </FloatingLabel>
+                            </Col>
+                            <Col md>
+                                <FloatingLabel controlId="floatingInputGrid" label="Expenses (Including Rent)">
+                                    <Form.Control onChange={handleChange} type="number" name="expenses" placeholder="" />
                                 </FloatingLabel>
                             </Col>
                         </Row>

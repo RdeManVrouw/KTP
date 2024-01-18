@@ -30,6 +30,43 @@ const Student2 = () => {
         console.log(data);
     };
 
+    const validate = () => {
+        if (!data.housing) {
+            return false;
+        }
+        return true;
+    };
+
+    const sendData = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "housing",
+                value: data.housing,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData2 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "rent2",
+                value: data.rent * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
 
@@ -38,6 +75,14 @@ const Student2 = () => {
     }
 
     const handleNext = () => {
+        if (validate() === false) {
+            alert('Please fill out all fields');
+            return;
+        }
+        sendData();
+        if (data.housing === 'YES') {
+            sendData2();
+        }
         setNext(true);
     }
 

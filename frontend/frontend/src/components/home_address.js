@@ -51,8 +51,7 @@ const Address = () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-            },
-            params: { name: "age" },
+            }
         })
         const data = await res.json();
         console.log(data);
