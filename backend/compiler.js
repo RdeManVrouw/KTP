@@ -22,14 +22,14 @@ expression      : Term1 [(AND | OR) Term1]*
 Term1           : Term2 [binaryoperator Term2]*
                 | NOT Term1
 Term2           : Term3 [('+' | '-') Term3]*
-Term3           : Term4 [('*' | '/') Term4]*
+Term3           : Term4 [('*' | '/' | DIV) Term4]*
 Term4           : '(' expression ')'
                 | '-' Term4
                 | identifier
                 | constant
 constant        : number | string | TRUE | FALSE
 */
-const keywords = ["GOAL", "END", "BEGIN", "STRING", "IF", "THEN", "ELSE", "NUMBER", "BOOLEAN", "AND", "OR", "NOT", "RETURN", "INPUT", "TRUE", "FALSE"];
+const keywords = ["GOAL", "END", "BEGIN", "STRING", "IF", "THEN", "ELSE", "NUMBER", "BOOLEAN", "AND", "OR", "NOT", "RETURN", "INPUT", "TRUE", "FALSE", "DIV"];
 
 Array.prototype.copy = function (){
   let output = [];
@@ -347,7 +347,7 @@ class Expr {
           vals[i] = this.children[i].evaluate(program);
           if (vals[i] == null) return null;
         }
-        switch (this.value){
+        switch (this.value.toUpperCase()){
           case '>':
             return vals[0] > vals[1];
           case '<':
@@ -374,6 +374,8 @@ class Expr {
             return vals[0] || vals[1];
           case "NOT":
             return !vals[0];
+          case "DIV":
+            return Math.floor(vals[0] / vals[1]);
           default: return null;
         }
       case 1:
@@ -524,7 +526,7 @@ class Expr {
       var operator = new Pointer();
       var child = new Expr();
       var readOperator;
-      while ((readOperator = (Expr.acceptOperator(str, index, "*", operator) || Expr.acceptOperator(str, index, "/", operator))) && Expr.acceptTerm4(str, index, child)){
+      while ((readOperator = (Expr.acceptOperator(str, index, "*", operator) || Expr.acceptOperator(str, index, "/", operator) || Expr.acceptOperator(str, index, "DIV", operator))) && Expr.acceptTerm4(str, index, child)){
         var copy = expr.copy();
         expr.value = operator.i;
         expr.type = 0;
