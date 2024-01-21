@@ -14,6 +14,7 @@ end
 boolean age_valid begin
   return age >= 18 AND age < 65 end
 end
+input number age end
 
 number loan_lower begin
   if type_loan == "car loan" then return amount_loan_car_lower end end
@@ -95,8 +96,8 @@ number mom_dad_rich_factor begin
   end
   return 0 end
 end
-input number mom_income end
-input number dad_income end
+input number mom_monthly_income end
+input number dad_monthly_income end
 
 number amount_loan_house_lower begin
   return 0 end
@@ -108,5 +109,3 @@ end
 input number loan end
 
 `;
-
-module.exports = inference_engine_txt;

@@ -103,16 +103,17 @@ class Program {
         throw_error(str, index.i, "compiler failure");
         return null;
       }
-      for (var i = 0; i < program.goalIdentifiers.length; i++){
+      var identifiers = program.getAllIdentifiers();
+      for (var i = 0; i < identifiers.length; i++){
         var exists = false;
         for (var j = 0; j < program.blocks.length; j++){
-          if (program.blocks[j].containsIdentifier(program.goalIdentifiers[i])){
+          if (program.blocks[j].containsIdentifier(identifiers[i])){
             exists = true;
             break;
           }
         }
         if (!exists){
-          throw_error(str, index.i, "GOAL-identifier '" + program.goalIdentifiers[i] + "' not defined");
+          throw_error(str, index.i, "identifier '" + identifiers[i] + "' not defined");
           return null;
         }
       }
@@ -124,6 +125,11 @@ class Program {
     }
   }
 
+  getAllIdentifiers(){
+    var output = this.goalIdentifiers.copy();
+    for (var i = 0; i < this.blocks.length; i++) this.blocks[i].getAllIdentifiers(output);
+    return output;
+  }
   static acceptGoalBlock(str, index, program){
     var temp = index.i;
     if (acceptKeyword(str, index, "GOAL")){
@@ -153,7 +159,7 @@ class Block {
       case 0:
         return this.statementList.execute(prgm);
       case 1:
-        prgm.message = {inputType: "value", datatype: this.datatype, identifier: this.identifier}
+        prgm.message = {inputType: "value", identifier: this.identifier, datatype: this.datatype};
         return null;
       case 2:
         prgm.message = {inputType: "choice", identifier: this.identifier, choices: this.choices.copy()};
@@ -161,6 +167,10 @@ class Block {
     }
   }
 
+  getAllIdentifiers(list){
+    if (!list.includes(this.identifier)) list.push(this.identifier);
+    if (this.statementList != undefined) this.statementList.getAllIdentifiers(list);
+  }
   containsIdentifier(identifier){
     return this.identifier == identifier;
   }
@@ -189,7 +199,6 @@ class Block {
       if (acceptNonKeyword(str, index, identifier)){
         var constant = new Pointer();
         if (Expr.acceptConstant(str, index, constant)){
-          console.log(constant.i);
           block.choices = [constant.i];
           while (Expr.acceptConstant(str, index, constant)) block.choices.push(constant.i);
           if (!acceptKeyword(str, index, "END")){
@@ -276,6 +285,10 @@ class Node {
     }
   }
 
+  getAllIdentifiers(list){
+    if (this.expr != undefined) this.expr.getAllIdentifiers(list);
+    for (var i = 0; i < this.children.length; i++) this.children[i].getAllIdentifiers(list);
+  }
   static acceptIfStatement(str, index, node){
     var temp = index.i;
     var child = new Node();
@@ -387,6 +400,11 @@ class Expr {
       default:
         return this.value;
     }
+  }
+
+  getAllIdentifiers(list){
+    if (this.type == 1 && !list.includes(this.value)) list.push(this.value);
+    for (var i = 0; i < this.children.length; i++) this.children[i].getAllIdentifiers(list);
   }
 
   clean(){
@@ -721,5 +739,3 @@ function acceptDatatype(str, index, item){
   }
   return false;
 }
-
-module.exports = Program;
