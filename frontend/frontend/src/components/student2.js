@@ -36,7 +36,7 @@ const Student2 = () => {
         }
         return true;
     };
-
+    
     const sendData = () => {
         fetch("http://localhost:3000/", {
             method: "POST",
@@ -44,22 +44,37 @@ const Student2 = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "housing",
-                value: data.housing,
+                name: "type_loan",
+                value: "student loan",
             }),
         })
             .then((res) => res.json())
             .then((data) => console.log(data));
     };
 
-    const sendData2 = () => {
+    const sendData2 = (value) => {
         fetch("http://localhost:3000/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "rent2",
+                name: "live_with_your_parents",
+                value: value,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData3 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "amount_student_rent",
                 value: data.rent * 1,
             }),
         })
@@ -79,10 +94,15 @@ const Student2 = () => {
             alert('Please fill out all fields');
             return;
         }
-        sendData();
         if (data.housing === 'YES') {
-            sendData2();
+            sendData();
+            sendData2(true);
+            sendData3();
+            setNext(true);
+            return;
         }
+        // sendData();
+        sendData2(false);
         setNext(true);
     }
 
@@ -98,8 +118,8 @@ const Student2 = () => {
                                 label="Housing"
                             >
                                 <Form.Select onClick={handleChange} name="housing" aria-label="Floating label select example">
-                                    <option name="housing" value="NO">With parents - no new rent</option>
-                                    <option name="housing" value="YES">Alone - new rent</option>
+                                    <option name="housing" value="YES">With parents - no new rent</option>
+                                    <option name="housing" value="NO">Alone - new rent</option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>

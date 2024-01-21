@@ -52,6 +52,7 @@ const Status = () => {
     };
 
     const sendData = () => {
+        console.log("status");
         fetch("http://localhost:3000/", {
             method: "POST",
             headers: {

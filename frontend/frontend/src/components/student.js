@@ -17,7 +17,7 @@ const Student = () => {
     const [data, setData] = useState({
         mother_income: '',
         father_income: '',
-        tution_fees: '',
+        duration: '',
     });
 
     const handleChange = (e) => {
@@ -32,25 +32,10 @@ const Student = () => {
         if (!data.father_income) {
             return false;
         }
-        if (!data.tution_fees) {
+        if (!data.duration) {
             return false;
         }
         return true;
-    };
-
-    const sendData = () => {
-        fetch("http://localhost:3000/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: "total_income",
-                value: data.father_income * 1 + data.mother_income * 1,
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => console.log(data));
     };
 
     const sendData2 = () => {
@@ -60,8 +45,38 @@ const Student = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "tution",
-                value: data.tution_fees * 1,
+                name: "dad_monthly_income",
+                value: data.father_income * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData3 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "mom_monthly_income",
+                value: data.mother_income * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData4 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "duration_loan_student",
+                value: data.duration * 1,
             }),
         })
             .then((res) => res.json())
@@ -76,12 +91,14 @@ const Student = () => {
     }
 
     const handleNext = () => {
+        validate();
         if (validate() === false) {
             alert("Please fill in all the fields");
             return;
         }
-        sendData();
         sendData2();
+        sendData3();
+        sendData4();
         setNext(true);
     }
 
@@ -105,8 +122,8 @@ const Student = () => {
                         </Row>
                         <Row className='mt-3'>
                             <Col>
-                                <FloatingLabel controlId="floatingTextarea" label="Tution Fees" className='font'>
-                                    <Form.Control onChange={handleChange} type="number" name='tution_fees' placeholder="" />
+                                <FloatingLabel controlId="floatingTextarea" label="Duration of Studies" className='font'>
+                                    <Form.Control onChange={handleChange} type="number" name='duration' placeholder="" />
                                 </FloatingLabel>
                             </Col>
                         </Row>

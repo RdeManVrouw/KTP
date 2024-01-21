@@ -109,3 +109,5 @@ end
 input number loan end
 
 `;
+
+module.exports = inference_engine_txt;

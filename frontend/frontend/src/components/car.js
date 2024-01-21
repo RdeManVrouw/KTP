@@ -41,6 +41,38 @@ const Car = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+                name: "type_loan",
+                value: "car loan",
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData2 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "car_age",
+                value: data.used,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData3 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "price_car",
+                value: data.price * 1,
             }),
         })
             .then((res) => res.json())
@@ -60,6 +92,8 @@ const Car = () => {
             return;
         }
         sendData();
+        sendData2();
+        sendData3();
         setNext(true);
     }
 
@@ -82,8 +116,8 @@ const Car = () => {
                                 label="New or Used"
                             >
                                 <Form.Select onClick={handleChange} name="used" aria-label="Floating label select example">
-                                    <option name="used" value="NO">New                                                   </option>
-                                    <option name="used" value="YES">Used                                                 </option>
+                                    <option name="used" value="new">New                                                   </option>
+                                    <option name="used" value="old">Used                                                 </option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>

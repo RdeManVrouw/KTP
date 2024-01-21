@@ -17,14 +17,19 @@ import Expenses from './expenses';
 const Salary = () => {
 
     const [data, setData] = useState({
-        salary: '',
-        income: '',
+        amount: '',
     });
 
-    const [flag, setFlag] = useState(false);
+    const [flag, setFlag] = useState(true);
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
+    };
+
+    const validate = () => {
+        if (!data.amount) {
+            return true;
+        }
     };
 
     const getData = async () => {
@@ -35,18 +40,26 @@ const Salary = () => {
             }
         })
         const data = await res.json();
-        console.log(data);
+        const string = data.employment.toString();
+        if (string === 'Unemployed') {
+            setFlag(false);
+        }
     };
 
+    useState(() => {
+        getData();
+    }, []);
+
     const sendData = () => {
+        console.log("salary");
         fetch("http://localhost:3000/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "age",
-                value: data.age * 1,
+                name: "salary",
+                value: data.amount * 1,
             }),
         })
             .then((res) => res.json())
@@ -56,17 +69,16 @@ const Salary = () => {
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
 
-    const [show, setShow] = useState(false);
-
     const handleBack = () => {
         setPrev(true);
     }
 
     const handleNext = () => {
-        if (data.salary === '' && data.income === '') {
-            setShow(true);
+        if (validate()) {
+            alert("Please fill all the fields");
             return;
         }
+        sendData();
         setNext(true);
     }
 
@@ -78,18 +90,18 @@ const Salary = () => {
                 {next ? <Expenses></Expenses> :
                     <>
                         <h1 className='font'>Payslip</h1><br />
-                        <Row className="g-2 mt-2 font">
-                            <Col md>
-                                <FloatingLabel controlId="floatingTextarea" label="Salary" className='font'>
-                                    <Form.Control onChange={handleChange} type="number" name='salary' placeholder="champ" />
-                                </FloatingLabel>
-                            </Col>
-                        </Row>
-                        {!show ? <> </> :
+                        {flag ? <>
+                            <Row className="g-2 mt-2 font">
+                                <Col md>
+                                    <FloatingLabel controlId="floatingTextarea" label="Salary" className='font'>
+                                        <Form.Control onChange={handleChange} type="number" name='amount' placeholder="champ" />
+                                    </FloatingLabel>
+                                </Col>
+                            </Row> </> :
                             <Row className="g-2 mt-2">
                                 <Col md>
-                                    <FloatingLabel controlId="floatingInputGrid" label="Income">
-                                        <Form.Control onChange={handleChange} type="income" name='income' placeholder="111234" />
+                                    <FloatingLabel controlId="floatingInputGrid" label="Income" className='font'>
+                                        <Form.Control onChange={handleChange} type="number" name='amount' placeholder="111234" />
                                     </FloatingLabel>
                                 </Col>
                             </Row>}

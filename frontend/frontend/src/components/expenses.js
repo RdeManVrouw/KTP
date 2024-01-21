@@ -26,7 +26,13 @@ const Expenses = () => {
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
-        console.log(data);
+    };
+
+    const send = () => {
+        sendData();
+        sendData2();
+        sendData3();
+        sendData4();
     };
 
     const sendData = () => {
@@ -36,8 +42,53 @@ const Expenses = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "expenses",
-                value: data.rent * 1 + data.loans * 1 + data.insurance * 1 + data.bills * 1,
+                name: "amount_other_loans",
+                value: data.loans * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData2 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "amount_total_insurance",
+                value: data.insurance * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData3 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "amount_recurring_expenses",
+                value: data.bills * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData4 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "amount_rent",
+                value: data.rent * 1,
             }),
         })
             .then((res) => res.json())
@@ -62,13 +113,6 @@ const Expenses = () => {
         return errors;
     };
 
-
-    // useEffect(() => {
-    //     fetch("http://localhost:3000/")
-    //         .then((res) => res.json())
-    //         .then((data) => setMessage(data.message));
-    // }, []);
-
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
   
@@ -79,7 +123,7 @@ const Expenses = () => {
     const handleNext = () => {
         let error = validate(data);
         if (error === false) {
-            sendData();
+            send();
             setNext(true);
             return;
         }

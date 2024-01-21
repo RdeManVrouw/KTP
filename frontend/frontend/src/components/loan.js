@@ -5,19 +5,38 @@ import Home from './home';
 import Form from 'react-bootstrap/Form'
 import Slider from '@mui/material/Slider';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Final from './final';
 
 const Calculator = () => {
 
     const [data, setData] = useState({
         loanAmount: '',
         duration: '',
-        interest_rate: '',
+        interest_rate: 0.5,
     });
+
+    const [values, setValues] = useState();
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
         console.log(data);
     }
+
+    const getData = async () => {
+        const res = await fetch("http://localhost:3000/", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const data = await res.json();
+        setValues(data);
+        console.log(values);
+    };
+
+    useState(() => {
+        getData();
+    }, []);
 
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
@@ -33,7 +52,7 @@ const Calculator = () => {
     return (
         <>
             {prev ? <Home></Home> : <>
-                {next ? <></> : <>
+                {next ? <Final data={data}></Final> : <>
                     <div className='font'><h1>Loan Information</h1></div>
                     <Row className='mt-5'>
                         <Col>
@@ -44,9 +63,9 @@ const Calculator = () => {
                             <Slider
                                 className='mt-4'
                                 name='loanAmount'
-                                min={5}
-                                step={1}
-                                max={30}
+                                min={0}
+                                step={100}
+                                max={values.loan_upper}
                                 onChange={handleChange}
                                 valueLabelDisplay="auto"
                                 aria-labelledby="non-linear-slider"
@@ -60,9 +79,9 @@ const Calculator = () => {
                             <Slider
                                 className='mt-4'
                                 name='duration'
-                                min={5}
+                                min={0}
                                 step={1}
-                                max={30}
+                                max={values.max_months_to_pay_back}
                                 onChange={handleChange}
                                 valueLabelDisplay="auto"
                                 aria-labelledby="non-linear-slider"
@@ -78,16 +97,16 @@ const Calculator = () => {
                     </Row>
                     <Row className='mt-5'>
                         <Col>
-                            <h5 className='font'>Monthly Payment</h5>
-                            {0}
+                            <h5 className='font'>Max Loan Amount</h5>
+                            {values.loan_upper}
                         </Col>
                         <Col>
-                            <h5 className='font'>Total Payment</h5>
-                            {0}
+                            <h5 className='font'>Max Duration</h5>
+                            {values.max_months_to_pay_back}
                         </Col>
                         <Col>
                             <h5 className='font'>Total Interest</h5>
-                            {0} 
+                            {data.interest_rate}
                         </Col>
                     </Row>
                     <Row className='mt-5'>

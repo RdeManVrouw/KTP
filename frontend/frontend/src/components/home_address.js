@@ -24,7 +24,6 @@ const Address = () => {
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
-        console.log(data);
     };
 
     const validate = (data) => {
@@ -40,21 +39,6 @@ const Address = () => {
         }
 
         return errors;
-    };
-
-    useEffect(() => {
-        getData();
-    });
-
-    const getData = async () => {
-        const res = await fetch("http://localhost:3000/", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-        const data = await res.json();
-        console.log(data);
     };
 
     const [next, setNext] = useState(false);
