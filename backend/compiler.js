@@ -361,9 +361,9 @@ class Expr {
           if (vals[i] == null) return null;
         }
         switch (this.value.toUpperCase()){
-          case '>':
+          case ">":
             return vals[0] > vals[1];
-          case '<':
+          case "<":
             return vals[0] < vals[1];
           case "==":
             return vals[0] == vals[1];
@@ -389,7 +389,10 @@ class Expr {
             return !vals[0];
           case "DIV":
             return Math.floor(vals[0] / vals[1]);
-          default: return null;
+          default:
+            console.log(this);
+            console.log("unknown operator '" + this.value.toUpperCase() + "'");
+            return null;
         }
       case 1:
         if (program.parameters[this.value] == undefined){
@@ -447,8 +450,8 @@ class Expr {
       return true;
     }
     if (str[index.i] == '<' || str[index.i] == '>'){
-      index.i++;
       item.i = str[index.i];
+      index.i++;
       return true;
     }
     index.i = temp;
