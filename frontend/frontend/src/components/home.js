@@ -72,7 +72,7 @@ const Home = ({ page }) => {
                             </Button>
 
                             <Button className="contact-btn rounded-pill font mt-3" size="lg" variant="primary" onClick={handleShow3}>
-                                Caar Loans
+                                Car Loans
                             </Button>
 
                             <Row className='mt-5'>
@@ -91,7 +91,7 @@ const Home = ({ page }) => {
                 <Modal.Header closeButton>
                     <Modal.Title className="font">Student Loans</Modal.Title>
                 </Modal.Header>
-                <Modal.Body className="font">Woohoo, you are reading this text in a modal!</Modal.Body>
+                <Modal.Body className="font">Intended to cover the cost of tuition, books and supplies, and living expenses while the borrower is in the process of pursuing a degree</Modal.Body>
                 <Modal.Footer>
                     <Button className="contact-btn rounded-pill font" variant="secondary" onClick={handleClose1}>
                         Close
@@ -106,7 +106,7 @@ const Home = ({ page }) => {
                 <Modal.Header closeButton>
                     <Modal.Title className="font">Housing Loans</Modal.Title>
                 </Modal.Header>
-                <Modal.Body className="font">Woohoo, you are reading this text in a modal!</Modal.Body>
+                <Modal.Body className="font">Buy a new or a resale home, construct a home or renovate or extend an existing one</Modal.Body>
                 <Modal.Footer>
                     <Button className="contact-btn rounded-pill font" variant="secondary" onClick={handleClose2}>
                         Close
@@ -121,7 +121,7 @@ const Home = ({ page }) => {
                 <Modal.Header closeButton>
                     <Modal.Title className="font">Car Loans</Modal.Title>
                 </Modal.Header>
-                <Modal.Body className="font">Woohoo, you are reading this text in a modal!</Modal.Body>
+                <Modal.Body className="font">Buying a new or used car can be complicated. However, breaking it down into simple steps will help you avoid car shopping’s biggest headaches.</Modal.Body>
                 <Modal.Footer>
                     <Button className="contact-btn rounded-pill font" variant="secondary" onClick={handleClose3}>
                         Close

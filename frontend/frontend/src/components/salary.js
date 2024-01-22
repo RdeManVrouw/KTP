@@ -108,7 +108,7 @@ const Salary = () => {
                         <Row className="g-2 mt-3">
                             <Col md>
                                 <Form.Group controlId="formFile" className="mb-3 font">
-                                    <Form.Label className='font'>Proof of Residence</Form.Label>
+                                    <Form.Label className='font'>Proof of Salary or Income</Form.Label>
                                     <Form.Control type="file" />
                                 </Form.Group>
                             </Col>

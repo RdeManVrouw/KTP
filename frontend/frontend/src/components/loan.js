@@ -12,12 +12,13 @@ const Calculator = () => {
     const [data, setData] = useState({
         loanAmount: '',
         duration: '',
-        interest_rate: 0.5,
+        interest_rate: '',
     });
 
     const [values, setValues] = useState({
         loan_upper: 1000,
         max_months_to_pay_back: 12,
+        interest_rate: 0.5,
     });
 
     const handleChange = (e) => {
@@ -38,6 +39,8 @@ const Calculator = () => {
         const data = await res.json();
         values.loan_upper = data.loan_upper;
         values.max_months_to_pay_back = data.max_months_to_pay_back;
+        values.interest_rate = data.interest_rate;
+        data.interest_rate = values.interest_rate;
         console.log(values);
     };
 
@@ -98,13 +101,6 @@ const Calculator = () => {
                     </Row>
                     <Row className='mt-5'>
                         <Col>
-                            <FloatingLabel controlId="floatingTextarea" label="Interest Rate" className='font'>
-                                <Form.Control onChange={handleChange} type="number" name='interest_rate' placeholder="5%" />
-                            </FloatingLabel>
-                        </Col>
-                    </Row>
-                    <Row className='mt-5'>
-                        <Col>
                             <h5 className='font'>Max Loan Amount</h5>
                             {values.loan_upper.toFixed(2)}€
                         </Col>
@@ -114,7 +110,7 @@ const Calculator = () => {
                         </Col>
                         <Col>
                             <h5 className='font'>Total Interest</h5>
-                            {data.interest_rate}%
+                            {values.interest_rate}%
                         </Col>
                     </Row>
                     <Row className='mt-5'>

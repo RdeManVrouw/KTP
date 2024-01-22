@@ -62,7 +62,8 @@ const House2 = () => {
             alert("Please fill all the fields");
             return;
         }
-        if (data.guarantor === 'YES') {
+        if (data.guarantor === 'yes') {
+            console.log("yes");
             setFlag(true);
             return;
         }

@@ -24,8 +24,11 @@ const Student2 = () => {
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
-        if (data.housing === 'YES') {
+        if (data.housing === 'NO') {
+            console.log('YES');
             setFlag(true);
+        }else{
+            setFlag(false);
         }
         console.log(data);
     };
