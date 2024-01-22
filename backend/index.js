@@ -20,7 +20,7 @@ app.post('/', (req, res) => {
     return;
   }
   prgm.message.state = "execution incomplete";
-  //res.json(prgm.parameters);
+  res.json(prgm.parameters);
 });
 
 app.listen(3000, () => {

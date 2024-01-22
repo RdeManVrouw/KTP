@@ -4,9 +4,9 @@ goal
   loan_lower
   loan_upper
   type_loan
+  interest_rate
   valid
   loan
-  interest_rate
 end
 
 boolean valid begin
@@ -128,7 +128,6 @@ number mom_dad_rich_factor begin
 end
 input number mom_monthly_income end
 input number dad_monthly_income end
-
 
 number amount_loan_house_lower begin
   return 0 end
