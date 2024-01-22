@@ -49,6 +49,36 @@ end
 input car_age "old" "new" end
 input number price_car end
 
+number amount_loan_house_lower begin
+  return 0 end
+end
+number amount_loan_house_upper begin
+  if buy == "yes" and guarantor_valid then
+    return price * 0.8 + (guarantor_disposable_income * 2) end
+  else
+    return price * 0.8 end
+  end
+end
+input number price end
+input buy "yes" "no" end
+
+number age_guarantor_valid begin
+  return age_guarantor >= 18 AND age_guarantor < 65 end
+end
+input number age_guarantor end
+
+number guarantor_disposable_income begin
+  return guarantor_salary - guarantor_expenses end
+end
+input number guarantor_salary end
+input number guarantor_expenses end
+
+boolean guarantor_valid begin
+  if guarantor == "yes" then return 1 end end
+  return 0 end
+end
+input guarantor "yes" "no" end
+
 number absolute_loan_upper begin
   return max_months_to_pay_back * disposable_income end
 end
@@ -98,6 +128,7 @@ number mom_dad_rich_factor begin
 end
 input number mom_monthly_income end
 input number dad_monthly_income end
+
 
 number amount_loan_house_lower begin
   return 0 end

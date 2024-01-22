@@ -106,15 +106,15 @@ const Calculator = () => {
                     <Row className='mt-5'>
                         <Col>
                             <h5 className='font'>Max Loan Amount</h5>
-                            {values.loan_upper}
+                            {values.loan_upper.toFixed(2)}€
                         </Col>
                         <Col>
                             <h5 className='font'>Max Duration</h5>
-                            {values.max_months_to_pay_back}
+                            {values.max_months_to_pay_back} months
                         </Col>
                         <Col>
                             <h5 className='font'>Total Interest</h5>
-                            {data.interest_rate}
+                            {data.interest_rate}%
                         </Col>
                     </Row>
                     <Row className='mt-5'>

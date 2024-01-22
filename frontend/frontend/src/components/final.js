@@ -21,21 +21,21 @@ const Final = (params) => {
                 <Row className='mt-5'>
                     <Col>
                         <h5 className='font'>Loan Amount</h5>
-                        {params.data.loanAmount}
+                        {params.data.loanAmount.toFixed(2)}€
                     </Col>
                 </Row> 
                 <Row className='mt-5'>
                     <Col>
                         <h5 className='font'>Montly Repayments</h5>
-                        {params.data.loanAmount / params.data.duration}
+                        {(params.data.loanAmount / params.data.duration).toFixed(2)}€
                     </Col>
                     <Col>
                         <h5 className='font'>Duration</h5>
-                        {params.data.duration}
+                        {params.data.duration} months
                     </Col>
                     <Col>
                         <h5 className='font'>Total Interest</h5>
-                        {params.data.interest_rate}
+                        {params.data.interest_rate}%
                     </Col>
                 </Row>
                 <Row className='mt-5'>

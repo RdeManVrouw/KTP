@@ -83,8 +83,8 @@ const House2 = () => {
                                     label="Do you have a guarantor?"
                                 >
                                     <Form.Select onClick={handleChange} name="guarantor" aria-label="Floating label select example">
-                                        <option name="guarantor" value="YES">Yes                                                   </option>
-                                        <option name="guarantor" value="NO">No                                                 </option>
+                                        <option name="guarantor" value="yes">Yes                                                   </option>
+                                        <option name="guarantor" value="no">No                                                 </option>
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>

@@ -101,8 +101,8 @@ const House = () => {
                                 label="Buy or Renovate"
                             >
                                 <Form.Select onClick={handleChange} name="buy" aria-label="Floating label select example">
-                                    <option name="buy" value="YES">Buy                                                   </option>
-                                    <option name="buy" value="NO">Renovate                                                 </option>
+                                    <option name="buy" value="yes">Buy                                                   </option>
+                                    <option name="buy" value="no">Renovate                                                 </option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>

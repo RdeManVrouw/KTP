@@ -68,8 +68,8 @@ const Pinfo = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "age",
-                value: data.age * 1,
+                name: "type_loan",
+                value: "house loan",
             }),
         })
             .then((res) => res.json())
@@ -83,8 +83,8 @@ const Pinfo = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "salary_guarantor",
-                value: data.salary * 1,
+                name: "age_guarantor",
+                value: data.age * 1,
             }),
         })
             .then((res) => res.json())
@@ -98,7 +98,22 @@ const Pinfo = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "expenses_guarantor",
+                name: "guarantor_salary",
+                value: data.salary * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData4 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "guarantor_expenses",
                 value: data.expenses * 1,
             }),
         })
@@ -124,6 +139,7 @@ const Pinfo = () => {
             sendData();
             sendData2();
             sendData3();
+            sendData4();
             setNext(true);
             return;
         }
