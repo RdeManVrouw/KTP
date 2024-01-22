@@ -6,6 +6,7 @@ goal
   type_loan
   valid
   loan
+  interest_rate
 end
 
 boolean valid begin
@@ -53,7 +54,7 @@ number amount_loan_house_lower begin
   return 0 end
 end
 number amount_loan_house_upper begin
-  if buy == "yes" and guarantor_valid then
+  if guarantor_valid and age_guarantor_valid and buy == "yes" then
     return price * 0.8 + (guarantor_disposable_income * 2) end
   else
     return price * 0.8 end
@@ -74,8 +75,7 @@ input number guarantor_salary end
 input number guarantor_expenses end
 
 boolean guarantor_valid begin
-  if guarantor == "yes" then return 1 end end
-  return 0 end
+  return guarantor == "yes" end
 end
 input guarantor "yes" "no" end
 
@@ -83,8 +83,8 @@ number absolute_loan_upper begin
   return max_months_to_pay_back * disposable_income end
 end
 number max_months_to_pay_back begin
-  if type_loan == "car loan" then return 12 end end
-  if type_loan == "student loan" then return 12 * 10 end end
+  if type_loan == "car loan" then return 12 * 8 end end
+  if type_loan == "student loan" then return 12 * 15 end end
   if type_loan == "house loan" then return 12 * 30 end end
 end
 number disposable_income begin
@@ -133,11 +133,14 @@ input number dad_monthly_income end
 number amount_loan_house_lower begin
   return 0 end
 end
-number amount_loan_house_upper begin
-  return 550000 end
-end
 
 input number loan end
+
+number interest_rate begin
+  if type_loan == "car loan" then return 7.9 end end
+  if type_loan == "student loan" then return 2.56 end end
+  if type_loan == "house loan" then return 12.4 end end
+end
 
 `;
 

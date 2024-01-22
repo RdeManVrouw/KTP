@@ -14,15 +14,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-  console.log("request body: " + req.body);
   prgm.setFact(req.body.name, req.body.value);
   if (prgm.stepBackwardchain()){
     res.json({ state: "execution complete", facts: prgm.parameters });
     return;
   }
-  console.log(prgm.parameters);
   prgm.message.state = "execution incomplete";
-  res.json(prgm.parameters);
+  //res.json(prgm.parameters);
 });
 
 app.listen(3000, () => {
