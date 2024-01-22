@@ -110,12 +110,12 @@ const Student = () => {
                         <div className='font'><h1>Student Loans</h1></div>
                         <Row className='mt-5'>
                             <Col>
-                                <FloatingLabel controlId="floatingTextarea" label="Mother's Salary (netto per month)" className='font'>
+                                <FloatingLabel controlId="floatingTextarea" label="Mother's Salary" className='font'>
                                     <Form.Control onChange={handleChange} type="number" name='mother_income' placeholder="" />
                                 </FloatingLabel>
                             </Col>
                             <Col>
-                                <FloatingLabel controlId="floatingTextarea" label="Father's Salary (netto per month)" className='font'>
+                                <FloatingLabel controlId="floatingTextarea" label="Father's Salary" className='font'>
                                     <Form.Control onChange={handleChange} type="number" name='father_income' placeholder="" />
                                 </FloatingLabel>
                             </Col>

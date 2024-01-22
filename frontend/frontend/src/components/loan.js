@@ -9,20 +9,19 @@ import Final from './final';
 
 const Calculator = () => {
 
-    const [data, setData] = useState({
+    const [data2, setData] = useState({
         loanAmount: '',
         duration: '',
-        interest_rate: '',
+        interest_rate: 0.5,
     });
 
     const [values, setValues] = useState({
         loan_upper: 1000,
         max_months_to_pay_back: 12,
-        interest_rate: 0.5,
     });
 
     const handleChange = (e) => {
-        setData({ ...data, [e.target.name]: e.target.value });
+        setData({ ...data2, [e.target.name]: e.target.value });
     }
 
     useEffect(() => {
@@ -37,10 +36,14 @@ const Calculator = () => {
             }
         })
         const data = await res.json();
-        values.loan_upper = data.loan_upper;
+        if  (data.loan_upper <= 0){
+            alert('You can not get a loan at the moment');
+            values.loan_upper = 0;
+        }else{
+            values.loan_upper = data.loan_upper;
+        }
         values.max_months_to_pay_back = data.max_months_to_pay_back;
-        values.interest_rate = data.interest_rate;
-        data.interest_rate = values.interest_rate;
+        data2.interest_rate = data.interest_rate;
         console.log(values);
     };
 
@@ -63,12 +66,12 @@ const Calculator = () => {
     return (
         <>
             {prev ? <Home></Home> : <>
-                {next ? <Final data={data}></Final> : <>
+                {next ? <Final data={data2}></Final> : <>
                     <div className='font'><h1>Loan Information</h1></div>
                     <Row className='mt-5'>
                         <Col>
                             <h5 className='font'>Loan Amount</h5>
-                            <FloatingLabel controlId="floatingTextarea" label={data.loanAmount} className='font'>
+                            <FloatingLabel controlId="floatingTextarea" label={data2.loanAmount} className='font'>
                                 <Form.Control onChange={handleChange} type="number" name='loanAmount' placeholder="" />
                             </FloatingLabel>
                             <Slider
@@ -84,7 +87,7 @@ const Calculator = () => {
                         </Col>
                         <Col>
                             <h5 className='font'>Duration</h5>
-                            <FloatingLabel controlId="floatingTextarea" label={data.duration} className='font'>
+                            <FloatingLabel controlId="floatingTextarea" label={data2.duration} className='font'>
                                 <Form.Control onChange={handleChange} type="number" name='duration' placeholder="" />
                             </FloatingLabel>
                             <Slider
@@ -110,7 +113,7 @@ const Calculator = () => {
                         </Col>
                         <Col>
                             <h5 className='font'>Total Interest</h5>
-                            {values.interest_rate}%
+                            {data2.interest_rate}%
                         </Col>
                     </Row>
                     <Row className='mt-5'>
