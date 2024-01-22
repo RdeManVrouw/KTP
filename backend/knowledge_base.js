@@ -4,9 +4,9 @@ goal
   loan_lower
   loan_upper
   type_loan
+  interest_rate
   valid
   loan
-  interest_rate
 end
 
 boolean valid begin

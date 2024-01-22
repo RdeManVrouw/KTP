@@ -29,6 +29,7 @@ const Calculator = () => {
     }, [values]);
 
     const getData = async () => {
+        console.log('here');
         const res = await fetch("http://localhost:3000/", {
             method: "GET",
             headers: {
@@ -36,6 +37,7 @@ const Calculator = () => {
             }
         })
         const data = await res.json();
+        console.log(data);
         if  (data.loan_upper <= 0){
             alert('You can not get a loan at the moment');
             values.loan_upper = 0;
