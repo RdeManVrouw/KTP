@@ -108,23 +108,22 @@ const Status = () => {
                             <Col md>
                                 <FloatingLabel
                                     controlId="floatingSelectGrid"
-                                    label="Gender"
+                                    label="Employement"
                                 >
                                     <Form.Select onClick={handleChange} name="employment" aria-label="Floating label select example">
                                         <option name="employment" value="Employed">Employed</option>
                                         <option name="employment" value="Unemployed">Unemployed</option>
-                                        <option name="employment" value="Student">Student</option>
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
                             <Col md>
                                 <FloatingLabel
                                     controlId="floatingSelectGrid"
-                                    label="Gender"
+                                    label="Status"
                                 >
                                     <Form.Select onClick={handleChange} name="status" aria-label="Floating label select example">
                                         <option name="status" value="Married">Married</option>
-                                        <option name="status" value="Alone">Alone</option>
+                                        <option name="status" value="Alone">Unmarried</option>
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>

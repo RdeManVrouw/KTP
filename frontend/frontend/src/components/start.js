@@ -19,7 +19,6 @@ const Start = () => {
 
   const changeHandler = country => {
     setCountry(country)
-    console.log(country);
   }
 
   const [next, setNext] = useState(false);

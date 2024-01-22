@@ -15,12 +15,18 @@ const Calculator = () => {
         interest_rate: 0.5,
     });
 
-    const [values, setValues] = useState();
+    const [values, setValues] = useState({
+        loan_upper: 1000,
+        max_months_to_pay_back: 12,
+    });
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
-        console.log(data);
     }
+
+    useEffect(() => {
+        console.log(values);
+    }, [values]);
 
     const getData = async () => {
         const res = await fetch("http://localhost:3000/", {
@@ -30,13 +36,15 @@ const Calculator = () => {
             }
         })
         const data = await res.json();
-        setValues(data);
+        values.loan_upper = data.loan_upper;
+        values.max_months_to_pay_back = data.max_months_to_pay_back;
         console.log(values);
     };
 
     useState(() => {
         getData();
-    }, []);
+    }
+        , []);
 
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
