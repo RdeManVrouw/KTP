@@ -129,10 +129,6 @@ end
 input number mom_monthly_income end
 input number dad_monthly_income end
 
-number amount_loan_house_lower begin
-  return 0 end
-end
-
 input number loan end
 
 number interest_rate begin
