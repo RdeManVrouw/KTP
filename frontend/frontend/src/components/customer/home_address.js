@@ -67,20 +67,20 @@ const Address = () => {
                         <h1 className='font'>Home Address Details</h1><br />
                         <Row className="g-2 mt-2 font">
                             <Col md>
-                                <FloatingLabel controlId="floatingTextarea" label="Street and Number" className='font'>
-                                    <Form.Control onChange={handleChange} type="email" name='address' placeholder="champ" />
+                                <FloatingLabel className="font" controlId="floatingTextarea" label="Street and Number">
+                                    <Form.Control className="font" onChange={handleChange} type="email" name='address' placeholder="champ" />
                                 </FloatingLabel>
                             </Col>
                         </Row>
                         <Row className="g-2 mt-2">
                             <Col md>
-                                <FloatingLabel controlId="floatingInputGrid" label="Zip">
-                                    <Form.Control onChange={handleChange} type="zip" name='zip' placeholder="111234" />
+                                <FloatingLabel className="font" controlId="floatingInputGrid" label="Zip">
+                                    <Form.Control className="font" onChange={handleChange} type="zip" name='zip' placeholder="111234" />
                                 </FloatingLabel>
                             </Col>
                             <Col md>
-                                <FloatingLabel controlId="floatingInputGrid" label="Town">
-                                    <Form.Control onChange={handleChange} type="name" name='town' placeholder="111234" />
+                                <FloatingLabel className="font" controlId="floatingInputGrid" label="Town">
+                                    <Form.Control className="font" onChange={handleChange} type="name" name='town' placeholder="111234" />
                                 </FloatingLabel>
                             </Col>
                         </Row>

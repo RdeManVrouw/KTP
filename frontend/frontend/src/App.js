@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './components/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Start from './components/start';
+import Start from './components/customer/start';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -28,8 +28,8 @@ const App = () => {
       }} className='font'>
         {next ? <Start></Start> :
           <>
-            <h1>Welcome</h1><br />
-            <h4>Press next to start</h4>
+            <h1 className='font'>Welcome</h1><br />
+            <h4 className='font'>Press next to start</h4>
             <Button className="contact-btn rounded-pill font" onClick={handleNext} size="md">
               Next
             </Button>

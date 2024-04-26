@@ -12,7 +12,7 @@ import { Model } from 'survey-core';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import House2 from './house2';
-import Calculator from './loan';
+import StartBanker from '../banker/startbanker';
 
 
 const Pinfo = () => {
@@ -150,7 +150,7 @@ const Pinfo = () => {
         <>
 
             {prev ? <House2></House2> : <>
-                {next ? <Calculator></Calculator> :
+                {next ? <StartBanker></StartBanker> :
                     <>
                         <h1 className='font'>Personal Information of Guarantor</h1><br />
                         <Row className="g-2 mt-2">
@@ -187,6 +187,14 @@ const Pinfo = () => {
                                 <FloatingLabel controlId="floatingInputGrid" label="Expenses (Including Rent)">
                                     <Form.Control onChange={handleChange} type="number" name="expenses" placeholder="" />
                                 </FloatingLabel>
+                            </Col>
+                        </Row>
+                        <Row className="g-2 mt-3">
+                            <Col md>
+                                <Form.Group controlId="formFile" className="mb-3 font">
+                                    <Form.Label className='font'>Proof of Expenses</Form.Label>
+                                    <Form.Control type="file" />
+                                </Form.Group>
                             </Col>
                         </Row>
                         <Row className='mt-5'>

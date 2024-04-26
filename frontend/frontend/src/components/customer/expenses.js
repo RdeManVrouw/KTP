@@ -141,25 +141,33 @@ const Expenses = () => {
                         <Row className="g-2 mt-2">
                             <Col md>
                                 <FloatingLabel controlId="floatingInputGrid" label="Rent">
-                                    <Form.Control onChange={handleChange} type="number" name='rent' placeholder="champ" />
+                                    <Form.Control className="font" onChange={handleChange} type="number" name='rent' placeholder="champ" />
                                 </FloatingLabel>
                             </Col>
                             <Col md>
                                 <FloatingLabel controlId="floatingInputGrid" label="Loans">
-                                    <Form.Control onChange={handleChange} type="number" name='loans' placeholder="pan" />
+                                    <Form.Control className="font" onChange={handleChange} type="number" name='loans' placeholder="pan" />
                                 </FloatingLabel>
                             </Col>
                         </Row>
                         <Row className="g-2 mt-3">
                             <Col md>
                                 <FloatingLabel controlId="floatingInputGrid" label="Insurance">
-                                    <Form.Control onChange={handleChange} type="number" name='insurance' placeholder="111234" />
+                                    <Form.Control className="font" onChange={handleChange} type="number" name='insurance' placeholder="111234" />
                                 </FloatingLabel>
                             </Col>
                             <Col md>
                                 <FloatingLabel controlId="floatingInputGrid" label="Bills">
-                                    <Form.Control onChange={handleChange} type="number" name="bills" placeholder="18+" />
+                                    <Form.Control className="font" onChange={handleChange} type="number" name="bills" placeholder="18+" />
                                 </FloatingLabel>
+                            </Col>
+                        </Row>
+                        <Row className="g-2 mt-3">
+                            <Col md>
+                                <Form.Group controlId="formFile" className="mb-3 font">
+                                    <Form.Label className='font'>Proof of Expenses</Form.Label>
+                                    <Form.Control type="file" />
+                                </Form.Group>
                             </Col>
                         </Row>
                         <Row className='mt-5'>
