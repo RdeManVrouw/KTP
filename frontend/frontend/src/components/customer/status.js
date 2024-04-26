@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Start from './start';
+import Salary from './salary';
 import Button from 'react-bootstrap/Button';
 import 'survey-core/defaultV2.min.css';
 import { Model } from 'survey-core';
@@ -13,20 +13,21 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import Address from './home_address';
 
+// email verification regex 
+const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
-const Pinfo = () => {
+
+const Status = () => {
 
     const [data, setData] = useState({
-        firstName: '',
-        lastName: '',
-        age: '',
-        gender: '',
-        id: '',
+        email: '',
+        employment: '',
+        status: '',
     });
 
     const [error, setError] = useState({
         error: false,
-        age_error: false,
+        email_error: false,
     });
 
     const handleChange = (e) => {
@@ -35,37 +36,31 @@ const Pinfo = () => {
 
     const validate = (data) => {
         error.error = false;
-        error.age_error = false;
-        if (!data.firstName) {
+        error.email_error = false;
+        if (!data.email) {
             error.error = true;
         }
-        if (!data.lastName) {
+        if (data.email !== '' && !emailRegex.test(data.email)) {
+            error.email_error = true;
+        }
+        if (!data.employment) {
             error.error = true;
         }
-        if (!data.age) {
+        if (!data.status) {
             error.error = true;
-        }
-        if (!data.id) {
-            error.error = true;
-        }
-        if (!data.gender) {
-            error.error = true;
-        }
-        if (data.age < 18 || data.age > 65) {
-            error.age_error = true;
         }
     };
 
     const sendData = () => {
-        console.log("pinfo");
+        console.log("status");
         fetch("http://localhost:3000/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "age",
-                value: data.age * 1,
+                name: "employment",
+                value: data.employment,
             }),
         })
             .then((res) => res.json())
@@ -83,8 +78,9 @@ const Pinfo = () => {
     const handleNext = () => {
         validate(data);
         if (error.error === false) {
-            if (error.age_error === true) {
-                alert("You must be between 18 and 65 years old");
+            if(error.email_error === true){
+                //show an example
+                alert("Please enter a valid email address\nExample: " + emailRegex);
                 return;
             }
             sendData();
@@ -97,43 +93,37 @@ const Pinfo = () => {
     return (
         <>
 
-            {prev ? <Start></Start> : <>
+            {prev ? <Address></Address> : <>
 
-                {next ? <Address></Address> :
+                {next ? <Salary></Salary> :
                     <>
-                        <h1 className='font'>Personal Information</h1><br />
-                        <Row className="g-2 mt-2">
+                        <Row className="g-2 mt-2 font">
                             <Col md>
-                                <FloatingLabel controlId="floatingInputGrid" label="First Name">
-                                    <Form.Control onChange={handleChange} type="name" name='firstName' placeholder="champ" />
-                                </FloatingLabel>
-                            </Col>
-                            <Col md>
-                                <FloatingLabel controlId="floatingInputGrid" label="Last Name">
-                                    <Form.Control onChange={handleChange} type="name" name='lastName' placeholder="pan" />
+                                <FloatingLabel className="font" controlId="floatingInputGrid" label="Email">
+                                    <Form.Control className="font" onChange={handleChange} type="email" name='email' placeholder="champ" />
                                 </FloatingLabel>
                             </Col>
                         </Row>
                         <Row className="g-2 mt-3">
                             <Col md>
-                                <FloatingLabel controlId="floatingInputGrid" label="ID">
-                                    <Form.Control onChange={handleChange} type="id" name='id' placeholder="111234" />
-                                </FloatingLabel>
-                            </Col>
-                            <Col md>
-                                <FloatingLabel controlId="floatingInputGrid" label="Age">
-                                    <Form.Control onChange={handleChange} type="age" name="age" placeholder="18+" />
+                                <FloatingLabel
+                                    controlId="floatingSelectGrid"
+                                    label="Employement"
+                                >
+                                    <Form.Select className="font" onClick={handleChange} name="employment" aria-label="Floating label select example">
+                                        <option name="employment" value="Employed">Employed</option>
+                                        <option name="employment" value="Unemployed">Unemployed</option>
+                                    </Form.Select>
                                 </FloatingLabel>
                             </Col>
                             <Col md>
                                 <FloatingLabel
                                     controlId="floatingSelectGrid"
-                                    label="Gender"
+                                    label="Status"
                                 >
-                                    <Form.Select onClick={handleChange} name="gender" aria-label="Floating label select example">
-                                        <option name="gender" value="Male">Male</option>
-                                        <option name="gender" value="Female">Female</option>
-                                        <option name="gender" value="Other">Other</option>
+                                    <Form.Select className="font" onClick={handleChange} name="status" aria-label="Floating label select example">
+                                        <option name="status" value="Married">Married</option>
+                                        <option name="status" value="Alone">Unmarried</option>
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
@@ -159,4 +149,4 @@ const Pinfo = () => {
     );
 }
 
-export default Pinfo;
+export default Status;

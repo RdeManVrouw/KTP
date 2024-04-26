@@ -8,17 +8,20 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Nav from 'react-bootstrap/Nav';
 import Home from './home';
 import Button from 'react-bootstrap/Button';
-import Student2 from './student2';
+import Calculator from './loan';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
+import House3 from './house3';
+import House from './house';
 
-const Student = () => {
+const House2 = () => {
 
     const [data, setData] = useState({
-        mother_income: '',
-        father_income: '',
-        duration: '',
+        guarantor: '',
+        name: '',
     });
+
+    const [flag, setFlag] = useState(false);
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
@@ -26,16 +29,25 @@ const Student = () => {
     };
 
     const validate = () => {
-        if (!data.mother_income) {
-            return false;
-        }
-        if (!data.father_income) {
-            return false;
-        }
-        if (!data.duration) {
+        if (!data.guarantor) {
             return false;
         }
         return true;
+    };
+
+    const sendData = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "type_loan",
+                value: "house loan",
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
     };
 
     const sendData2 = () => {
@@ -45,38 +57,8 @@ const Student = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "dad_monthly_income",
-                value: data.father_income * 1,
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => console.log(data));
-    };
-
-    const sendData3 = () => {
-        fetch("http://localhost:3000/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: "mom_monthly_income",
-                value: data.mother_income * 1,
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => console.log(data));
-    };
-
-    const sendData4 = () => {
-        fetch("http://localhost:3000/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: "duration_loan_student",
-                value: data.duration * 1,
+                name: "guarantor",
+                value: data.guarantor,
             }),
         })
             .then((res) => res.json())
@@ -91,40 +73,46 @@ const Student = () => {
     }
 
     const handleNext = () => {
-        validate();
-        if (validate() === false) {
-            alert("Please fill in all the fields");
+        if (!validate()) {
+            alert("Please fill all the fields");
             return;
         }
+        if (data.guarantor === 'yes') {
+            console.log("yes");
+            setFlag(true);
+            return;
+        }else{
+            sendData();
+        }
         sendData2();
-        sendData3();
-        sendData4();
         setNext(true);
     }
 
     return (
         <>
-            {prev ? <Home></Home> : <>
-                {next ? <Student2></Student2> :
-                    <>
-                        <div className='font'><h1>Student Loans</h1></div>
+            {prev ? <House></House> : <>
+                {flag ? <House3></House3> : <>
+                    {next ? <Calculator></Calculator> : <>
+                        <div className='font'><h1>Housing</h1></div>
                         <Row className='mt-5'>
                             <Col>
-                                <FloatingLabel controlId="floatingTextarea" label="Mother's Salary" className='font'>
-                                    <Form.Control onChange={handleChange} type="number" name='mother_income' placeholder="" />
-                                </FloatingLabel>
-                            </Col>
-                            <Col>
-                                <FloatingLabel controlId="floatingTextarea" label="Father's Salary" className='font'>
-                                    <Form.Control onChange={handleChange} type="number" name='father_income' placeholder="" />
+                                <FloatingLabel
+                                    controlId="floatingSelectGrid"
+                                    label="Do you have a guarantor?"
+                                >
+                                    <Form.Select onClick={handleChange} name="guarantor" aria-label="Floating label select example">
+                                        <option name="guarantor" value="yes">Yes                                                   </option>
+                                        <option name="guarantor" value="no">No                                                 </option>
+                                    </Form.Select>
                                 </FloatingLabel>
                             </Col>
                         </Row>
-                        <Row className='mt-3'>
-                            <Col>
-                                <FloatingLabel controlId="floatingTextarea" label="Duration of Studies (months)" className='font'>
-                                    <Form.Control onChange={handleChange} type="number" name='duration' placeholder="" />
-                                </FloatingLabel>
+                        <Row className="g-2 mt-3">
+                            <Col md>
+                                <Form.Group controlId="formFile" className="mb-3 font">
+                                    <Form.Label className='font'>Proof of Identity</Form.Label>
+                                    <Form.Control type="file" />
+                                </Form.Group>
                             </Col>
                         </Row>
                         <Row className='mt-5'>
@@ -140,9 +128,10 @@ const Student = () => {
                             </Col>
                         </Row>
                     </>}
+                </>}
             </>}
         </>
     );
 }
 
-export default Student;
+export default House2;

@@ -11,12 +11,13 @@ import Button from 'react-bootstrap/Button';
 import Calculator from './loan';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
+import House2 from './house2';
 
-const Car = () => {
+const House = () => {
 
     const [data, setData] = useState({
         price: '',
-        used: '',
+        buy: '',
     });
 
     const handleChange = (e) => {
@@ -28,7 +29,7 @@ const Car = () => {
         if (!data.price) {
             return false;
         }
-        if (!data.used) {
+        if (!data.buy) {
             return false;
         }
         return true;
@@ -41,8 +42,8 @@ const Car = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "type_loan",
-                value: "car loan",
+                name: "price",
+                value: data.price * 1,
             }),
         })
             .then((res) => res.json())
@@ -56,8 +57,8 @@ const Car = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "car_age",
-                value: data.used,
+                name: "buy",
+                value: data.buy,
             }),
         })
             .then((res) => res.json())
@@ -71,8 +72,8 @@ const Car = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "price_car",
-                value: data.price * 1,
+                name: "type_loan",
+                value: "house loan",
             }),
         })
             .then((res) => res.json())
@@ -87,8 +88,8 @@ const Car = () => {
     }
 
     const handleNext = () => {
-        if (!validate()) {
-            alert("Please fill all the fields");
+        if (validate() === false) {
+            alert("Please fill in all the fields");
             return;
         }
         sendData();
@@ -100,8 +101,8 @@ const Car = () => {
     return (
         <>
             {prev ? <Home></Home> : <>
-                {next ? <Calculator></Calculator> : <>
-                    <div className='font'><h1>Car Loans</h1></div>
+                {next ? <House2></House2> : <>
+                    <div className='font'><h1>Housing</h1></div>
                     <Row className='mt-5'>
                         <Col>
                             <FloatingLabel controlId="floatingTextarea" label="Price" className='font'>
@@ -113,11 +114,11 @@ const Car = () => {
                         <Col>
                             <FloatingLabel
                                 controlId="floatingSelectGrid"
-                                label="New or Used"
+                                label="Buy or Renovate"
                             >
-                                <Form.Select onClick={handleChange} name="used" aria-label="Floating label select example">
-                                    <option name="used" value="new">New                                                   </option>
-                                    <option name="used" value="old">Used                                                 </option>
+                                <Form.Select onClick={handleChange} name="buy" aria-label="Floating label select example">
+                                    <option name="buy" value="yes">Buy                                                   </option>
+                                    <option name="buy" value="no">Renovate                                                 </option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>
@@ -140,4 +141,4 @@ const Car = () => {
     );
 }
 
-export default Car;
+export default House;

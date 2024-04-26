@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Home from './home';
 import Pinfo from './personal_info';
-import App from '../App';
+import App from '../../App';
 import Select from 'react-select'
 import countryList from 'react-select-country-list'
 import Button from 'react-bootstrap/Button';

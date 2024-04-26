@@ -94,14 +94,14 @@ const Salary = () => {
                             <Row className="g-2 mt-2 font">
                                 <Col md>
                                     <FloatingLabel controlId="floatingTextarea" label="Salary" className='font'>
-                                        <Form.Control onChange={handleChange} type="number" name='amount' placeholder="champ" />
+                                        <Form.Control className="font" onChange={handleChange} type="number" name='amount' placeholder="champ" />
                                     </FloatingLabel>
                                 </Col>
                             </Row> </> :
                             <Row className="g-2 mt-2">
                                 <Col md>
                                     <FloatingLabel controlId="floatingInputGrid" label="Income" className='font'>
-                                        <Form.Control onChange={handleChange} type="number" name='amount' placeholder="111234" />
+                                        <Form.Control className="font" onChange={handleChange} type="number" name='amount' placeholder="111234" />
                                     </FloatingLabel>
                                 </Col>
                             </Row>}

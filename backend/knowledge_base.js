@@ -7,6 +7,8 @@ goal
   interest_rate
   valid
   loan
+  valid_user
+  valid_loan
 end
 
 boolean valid begin
@@ -54,10 +56,10 @@ number amount_loan_house_lower begin
   return 0 end
 end
 number amount_loan_house_upper begin
-  if guarantor_valid and age_guarantor_valid and buy == "yes" then
-    return price * 0.8 + (guarantor_disposable_income * 2) end
+  if guarantor_valid and age_guarantor_valid then
+    return price + (guarantor_disposable_income * 2) end
   else
-    return price * 0.8 end
+    return price end
   end
 end
 input number price end
@@ -140,6 +142,148 @@ number interest_rate begin
   if type_loan == "car loan" then return 7.9 end end
   if type_loan == "student loan" then return 2.56 end end
   if type_loan == "house loan" then return 12.4 end end
+end
+
+boolean valid_user begin
+  return valid_id and valid_name and valid_age and valid_nat and valid_address and valid_street and valid_employment and valid_salary and valid_expenses and valid_amount_other_loans and valid_amount_total_insurances and valid_amount_recurring_expenses end
+end
+
+boolean banker begin
+  return banker_number == "1234" end
+end
+input number banker_number end
+
+boolean valid_id begin
+  return valid_date == "valid" end
+end
+input valid_date "not valid" "valid" end
+
+boolean valid_name begin
+  return valid_name == "valid" end
+end
+input valid_name "valid" "not valid" end
+
+boolean valid_age begin
+  return valid_age == "valid" end
+end
+input valid_age "valid" "not valid" end
+
+boolean valid_nat begin
+  return valid_nat == "valid" end
+end
+input valid_nat "valid" "not valid" end
+
+boolean valid_address begin
+  return valid_address == "valid" end
+end
+input valid_address "valid" "not valid" end
+
+boolean valid_street begin
+  return valid_street == "valid" end
+end
+input valid_street "valid" "not valid" end
+
+boolean valid_employment begin
+  return valid_employment == "valid" end
+end
+input valid_employment "valid" "not valid" end
+
+boolean valid_salary begin
+  return valid_salary == "valid"  end
+end
+input valid_salary "valid" "not valid" end
+
+boolean valid_expenses begin
+  return valid_expenses == "valid" end
+end
+input valid_expenses "valid" "not valid" end
+
+boolean valid_amount_other_loans begin
+  return valid_amount_other_loans == "valid" end
+end
+input valid_amount_other_loans "valid" "not valid" end
+
+boolean valid_amount_total_insurances begin
+  return valid_amount_total_insurances == "valid" end
+end
+input valid_amount_total_insurance "valid" "not valid" end
+
+boolean valid_amount_recurring_expenses begin
+  return valid_amount_recurring_expenses == "valid" end
+end
+input valid_amount_recurring_expenses "valid" "not valid" end
+
+boolean valid_rent begin
+  return valid_rent == "valid" end
+end
+input valid_rent "valid" "not valid" end
+
+boolean valid_guar_id begin
+  return valid_guar_id == "valid" end
+end
+input valid_guar_id "valid" "not valid" end
+
+boolean valid_guar_name begin
+  return valid_guar_name == "valid" end
+end
+input valid_guar_name "valid" "not valid" end
+
+boolean valid_guar_age begin
+  return valid_guar_age == "valid" end
+end
+input valid_guar_age "valid" "not valid" end
+
+boolean valid_guar_nat begin
+  return valid_guar_nat == "valid" end
+end
+input valid_guar_nat "valid" "not valid" end
+
+boolean valid_guar_salary begin
+  return valid_guar_salary == "valid" end
+end
+input valid_guar_salary "valid" "not valid" end
+
+boolean valid_guar_expenses begin
+  return valid_guar_expenses == "valid" end
+end
+input valid_guar_expenses "valid" "not valid" end
+
+boolean valid_guarantor_details begin
+  return valid_guar_id and valid_guar_name and valid_guar_age and valid_guar_nat and valid_guar_salary and valid_guar_expenses end
+end
+
+boolean valid_father_income begin
+  return valid_father_income == "valid" end
+end
+input valid_father_income "valid" "not valid" end
+
+boolean valid_mother_income begin
+  return valid_mother_income == "valid" end
+end
+input valid_mother_income "valid" "not valid" end
+
+boolean valid_duration begin
+  return valid_duration == "valid" end
+end
+input valid_duration "valid" "not valid" end
+
+boolean valid_fees begin
+  return valid_fees == "valid" end
+end
+input valid_fees "valid" "not valid" end
+
+boolean valid_car_price begin
+  return valid_car_price == "valid" end
+end
+input valid_car_price "valid" "not valid" end
+
+boolean valid_car_age begin
+  return valid_car_age == "valid" end
+end
+input valid_car_age "valid" "not valid" end
+
+boolean valid_loan begin
+  return valid_user and valid_guarantor_details end
 end
 
 `;

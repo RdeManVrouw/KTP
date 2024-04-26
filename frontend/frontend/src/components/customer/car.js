@@ -8,38 +8,32 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Nav from 'react-bootstrap/Nav';
 import Home from './home';
 import Button from 'react-bootstrap/Button';
-import Calculator from './loan';
+import StartBanker from '../banker/startbanker';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
-import Student from './student';
 
-const Student2 = () => {
+const Car = () => {
 
     const [data, setData] = useState({
-        rent: '',
-        housing: '',
+        price: '',
+        used: '',
     });
-
-    const [flag, setFlag] = useState(false);
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
-        if (data.housing === 'NO') {
-            console.log('YES');
-            setFlag(true);
-        }else{
-            setFlag(false);
-        }
         console.log(data);
     };
 
     const validate = () => {
-        if (!data.housing) {
+        if (!data.price) {
+            return false;
+        }
+        if (!data.used) {
             return false;
         }
         return true;
     };
-    
+
     const sendData = () => {
         fetch("http://localhost:3000/", {
             method: "POST",
@@ -48,22 +42,22 @@ const Student2 = () => {
             },
             body: JSON.stringify({
                 name: "type_loan",
-                value: "student loan",
+                value: "car loan",
             }),
         })
             .then((res) => res.json())
             .then((data) => console.log(data));
     };
 
-    const sendData2 = (value) => {
+    const sendData2 = () => {
         fetch("http://localhost:3000/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "live_with_your_parents",
-                value: value,
+                name: "car_age",
+                value: data.used,
             }),
         })
             .then((res) => res.json())
@@ -77,8 +71,8 @@ const Student2 = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "amount_student_rent",
-                value: data.rent * 1,
+                name: "price_car",
+                value: data.price * 1,
             }),
         })
             .then((res) => res.json())
@@ -93,49 +87,49 @@ const Student2 = () => {
     }
 
     const handleNext = () => {
-        if (validate() === false) {
-            alert('Please fill out all fields');
+        if (!validate()) {
+            alert("Please fill all the fields");
             return;
         }
-        if (data.housing === 'YES') {
-            sendData();
-            sendData2(true);
-            sendData3();
-            setNext(true);
-            return;
-        }
-        // sendData();
-        sendData2(false);
+        sendData();
+        sendData2();
+        sendData3();
         setNext(true);
     }
 
     return (
         <>
-            {prev ? <Student></Student> : <>
-                {next ? <Calculator></Calculator> : <>
-                    <div className='font'><h1>Housing Situation</h1></div>
+            {prev ? <Home></Home> : <>
+                {next ? <StartBanker></StartBanker> : <>
+                    <div className='font'><h1>Car Loans</h1></div>
                     <Row className='mt-5'>
+                        <Col>
+                            <FloatingLabel controlId="floatingTextarea" label="Price" className='font'>
+                                <Form.Control onChange={handleChange} type="number" name='price' placeholder="" />
+                            </FloatingLabel>
+                        </Col>
+                    </Row>
+                    <Row className='mt-3'>
                         <Col>
                             <FloatingLabel
                                 controlId="floatingSelectGrid"
-                                label="Housing"
+                                label="New or Used"
                             >
-                                <Form.Select onClick={handleChange} name="housing" aria-label="Floating label select example">
-                                    <option name="housing" value="YES">With parents - no new rent</option>
-                                    <option name="housing" value="NO">Alone - new rent</option>
+                                <Form.Select className="font" onClick={handleChange} name="used" aria-label="Floating label select example">
+                                    <option name="used" value="new">New                                                   </option>
+                                    <option name="used" value="old">Used                                                 </option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>
                     </Row>
-                    {flag ? <>
-                        <Row className='mt-3'>
-                            <Col>
-                                <FloatingLabel controlId="floatingTextarea" label="Rent" className='font'>
-                                    <Form.Control onChange={handleChange} type="number" name='rent' placeholder="" />
-                                </FloatingLabel>
+                    <Row className="g-2 mt-3">
+                            <Col md>
+                                <Form.Group controlId="formFile" className="mb-3 font">
+                                    <Form.Label className='font'>Proof of Car</Form.Label>
+                                    <Form.Control type="file" />
+                                </Form.Group>
                             </Col>
                         </Row>
-                    </> : <></>}
                     <Row className='mt-5'>
                         <Col>
                             <Button className="contact-btn rounded-pill font" onClick={handleBack} size="md">
@@ -154,4 +148,4 @@ const Student2 = () => {
     );
 }
 
-export default Student2;
+export default Car;
