@@ -1,38 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import '../App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Container from 'react-bootstrap/Container';
+import React, { useState } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Dropdown from 'react-bootstrap/Dropdown';
-import Nav from 'react-bootstrap/Nav';
-import Home from './home';
 import Button from 'react-bootstrap/Button';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
-import House3 from './house3';
-import House from './house';
-import StartBanker from '../banker/startbanker';
+import ValidExpenses from "./validexpenses";
+import ValidGuarId from "./validguarid";
 
-const House2 = () => {
+const ValidHouse = () => {
+
+    const [next, setNext] = useState(false);
+    const [prev, setPrev] = useState(false);
 
     const [data, setData] = useState({
-        guarantor: '',
-        name: '',
+        price: '',
+        buy_or_renovate: '',
     });
-
-    const [flag, setFlag] = useState(false);
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
-        console.log(data);
     };
 
-    const validate = () => {
-        if (!data.guarantor) {
-            return false;
+    const validate = (data) => {
+        let errors = false;
+        if (!data.price) {
+            errors = true;
         }
-        return true;
+        if (!data.buy_or_renovate) {
+            errors = true;
+        }
+
+        return errors;
     };
 
     const sendData = () => {
@@ -42,8 +40,8 @@ const House2 = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "type_loan",
-                value: "house loan",
+                name: "valid_price_house",
+                value: data.price,
             }),
         })
             .then((res) => res.json())
@@ -57,59 +55,57 @@ const House2 = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "guarantor",
-                value: data.guarantor,
+                name: "valid_reno_or_buy",
+                value: data.buy_or_renovate,
             }),
         })
             .then((res) => res.json())
             .then((data) => console.log(data));
     };
 
-    const [next, setNext] = useState(false);
-    const [prev, setPrev] = useState(false);
-
     const handleBack = () => {
         setPrev(true);
     }
 
     const handleNext = () => {
-        if (!validate()) {
+        let error = validate(data);
+        if (error === true) {
             alert("Please fill all the fields");
             return;
         }
+        sendData();
         sendData2();
-        if (data.guarantor === 'yes') {
-            setFlag(true);
-            return;
-        }
         setNext(true);
     }
 
     return (
         <>
-            {prev ? <House></House> : <>
-                {flag ? <House3></House3> : <>
-                    {next ? <StartBanker></StartBanker> : <>
-                        <div className='font'><h1>Housing</h1></div>
-                        <Row className='mt-5'>
-                            <Col>
+            {prev ? <ValidExpenses></ValidExpenses> : <>
+                {next ? <ValidGuarId></ValidGuarId> :
+                    <>
+                        <h1 className='font'>House Details</h1><br />
+                        <Row className="g-2 mt-3">
+                            <Col md>
                                 <FloatingLabel
                                     controlId="floatingSelectGrid"
-                                    label="Do you have a guarantor?"
+                                    label="Valid Price"
                                 >
-                                    <Form.Select onClick={handleChange} name="guarantor" aria-label="Floating label select example">
-                                        <option name="guarantor" value="yes">Yes                                                   </option>
-                                        <option name="guarantor" value="no">No                                                 </option>
+                                    <Form.Select className="font" onClick={handleChange} name="price" aria-label="Floating label select example">
+                                        <option name="price" value="valid">Match</option>
+                                        <option name="price" value="not valid">Not Match</option>
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
-                        </Row>
-                        <Row className="g-2 mt-3">
                             <Col md>
-                                <Form.Group controlId="formFile" className="mb-3 font">
-                                    <Form.Label className='font'>Proof of Identity</Form.Label>
-                                    <Form.Control type="file" />
-                                </Form.Group>
+                                <FloatingLabel
+                                    controlId="floatingSelectGrid"
+                                    label="Valid Buy/Renovate"
+                                >
+                                    <Form.Select className="font" onClick={handleChange} name="buy_or_renovate" aria-label="Floating label select example">
+                                        <option name="buy_or_renovate" value="valid">Match</option>
+                                        <option name="buy_or_renovate" value="not valid">Not Match</option>
+                                    </Form.Select>
+                                </FloatingLabel>
                             </Col>
                         </Row>
                         <Row className='mt-5'>
@@ -124,11 +120,12 @@ const House2 = () => {
                                 </Button>
                             </Col>
                         </Row>
-                    </>}
-                </>}
+                    </>
+                }
             </>}
+
         </>
     );
 }
 
-export default House2;
+export default ValidHouse;

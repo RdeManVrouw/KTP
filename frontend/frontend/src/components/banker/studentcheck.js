@@ -15,6 +15,8 @@ const ValidStudentSalary = () => {
     const [data, setData] = useState({
         father: '',
         mother: '',
+        fees: '',
+        duration: '',
     });
 
     const handleChange = (e) => {
@@ -27,6 +29,12 @@ const ValidStudentSalary = () => {
             errors = true;
         }
         if (!data.mother) {
+            errors = true;
+        }
+        if (!data.fees) {
+            errors = true;
+        }
+        if (!data.duration) {
             errors = true;
         }
 
@@ -63,6 +71,36 @@ const ValidStudentSalary = () => {
             .then((data) => console.log(data));
     };
 
+    const sendData3 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "valid_fees",
+                value: data.fees,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
+    const sendData4 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "valid_duration",
+                value: data.duration,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
     const handleBack = () => {
         setPrev(true);
     }
@@ -75,6 +113,8 @@ const ValidStudentSalary = () => {
         }
         sendData();
         sendData2();
+        sendData3();
+        sendData4();
         setNext(true);
     }
 
@@ -104,6 +144,30 @@ const ValidStudentSalary = () => {
                                     <Form.Select className="font" onClick={handleChange} name="mother" aria-label="Floating label select example">
                                         <option name="mother" value="valid">Match</option>
                                         <option name="mother" value="not valid">Not Match</option>
+                                    </Form.Select>
+                                </FloatingLabel>
+                            </Col>
+                        </Row>
+                        <Row className="g-2 mt-3">
+                            <Col md>
+                                <FloatingLabel
+                                    controlId="floatingSelectGrid"
+                                    label="Valid Fees"
+                                >
+                                    <Form.Select className="font" onClick={handleChange} name="fees" aria-label="Floating label select example">
+                                        <option name="fees" value="valid">Match</option>
+                                        <option name="fees" value="not valid">Not Match</option>
+                                    </Form.Select>
+                                </FloatingLabel>
+                            </Col>
+                            <Col md>
+                                <FloatingLabel
+                                    controlId="floatingSelectGrid"
+                                    label="Valid Duration"
+                                >
+                                    <Form.Select className="font" onClick={handleChange} name="duration" aria-label="Floating label select example">
+                                        <option name="duration" value="valid">Match</option>
+                                        <option name="duration" value="not valid">Not Match</option>
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>

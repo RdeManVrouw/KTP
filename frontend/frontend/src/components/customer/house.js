@@ -123,6 +123,14 @@ const House = () => {
                             </FloatingLabel>
                         </Col>
                     </Row>
+                    <Row className="g-2 mt-3">
+                            <Col md>
+                                <Form.Group controlId="formFile" className="mb-3 font">
+                                    <Form.Label className='font'>Proof of House</Form.Label>
+                                    <Form.Control type="file" />
+                                </Form.Group>
+                            </Col>
+                    </Row>
                     <Row className='mt-5'>
                         <Col>
                             <Button className="contact-btn rounded-pill font" onClick={handleBack} size="md">

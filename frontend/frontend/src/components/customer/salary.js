@@ -51,7 +51,6 @@ const Salary = () => {
     }, []);
 
     const sendData = () => {
-        console.log("salary");
         fetch("http://localhost:3000/", {
             method: "POST",
             headers: {

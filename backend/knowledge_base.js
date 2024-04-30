@@ -7,8 +7,6 @@ goal
   interest_rate
   valid
   loan
-  valid_user
-  valid_loan
 end
 
 boolean valid begin
@@ -56,10 +54,10 @@ number amount_loan_house_lower begin
   return 0 end
 end
 number amount_loan_house_upper begin
-  if guarantor_valid and age_guarantor_valid then
-    return price + (guarantor_disposable_income * 2) end
-  else
+  if not guarantor_valid then
     return price end
+  else
+    return price + (guarantor_disposable_income * 2) end
   end
 end
 input number price end
@@ -114,17 +112,18 @@ number amount_loan_student_lower begin
 end
 number amount_loan_student_upper begin
   if live_with_your_parents then
-    return (1065.43 + mom_dad_rich_factor) * duration_loan_student end
+    return (fees + mom_dad_rich_factor) * duration_loan_student end
   else
-    return 1410.79 * duration_loan_student end
+    return fees * duration_loan_student end
   end
 end
 input boolean live_with_your_parents end
 input number duration_loan_student end
+input number fees end
 
 number mom_dad_rich_factor begin
   if mom_monthly_income + dad_monthly_income > 10000 then
-    return 10000 - mom_monthly_income - dad_monthly_income end
+    return 100000 - mom_monthly_income - dad_monthly_income end
   end
   return 0 end
 end
@@ -140,7 +139,7 @@ number interest_rate begin
 end
 
 boolean valid_user begin
-  return valid_id and valid_name and valid_age and valid_nat and valid_address and valid_street and valid_employment and valid_salary and valid_expenses and valid_amount_other_loans and valid_amount_total_insurances and valid_amount_recurring_expenses end
+  return banker and valid_id and valid_name and valid_age and valid_nat and valid_address and valid_street and valid_employment and valid_salary and valid_expenses and valid_amount_other_loans and valid_amount_total_insurances and valid_amount_recurring_expenses end
 end
 
 boolean banker begin
@@ -246,6 +245,16 @@ input valid_guar_expenses "valid" "not valid" end
 boolean valid_guarantor_details begin
   return valid_guar_id and valid_guar_name and valid_guar_age and valid_guar_nat and valid_guar_salary and valid_guar_expenses end
 end
+
+boolean valid_price_house begin
+  return valid_price_house == "valid" end
+end
+input valid_price_house "valid" "not valid" end
+
+boolean valid_reno_or_buy begin
+  return valid_reno_or_buy == "valid" end
+end
+input valid_reno_or_buy "valid" "not valid" end
 
 boolean valid_father_income begin
   return valid_father_income == "valid" end

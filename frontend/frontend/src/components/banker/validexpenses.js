@@ -5,9 +5,9 @@ import Button from 'react-bootstrap/Button';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import ValidIncome from "./validincome";
-import ValidGuarId from "./validguarid";
 import ValidStudentSalary from "./studentcheck";
 import ValidCar from "./validcar";
+import ValidHouse from "./validhouse";
 
 const ValidExpenses = () => {
 
@@ -157,7 +157,7 @@ const ValidExpenses = () => {
     return (
         <>
             {showStudent ? <ValidStudentSalary></ValidStudentSalary> : <>
-                {showGuarantor ? <ValidGuarId></ValidGuarId> : <>
+                {showGuarantor ? <ValidHouse></ValidHouse> : <>
                     {showCar ? <ValidCar></ValidCar> : <>
                         {prev ? <ValidIncome></ValidIncome> : <>
                             <h1 className='font'>Expenses</h1><br />
