@@ -12,12 +12,12 @@ const Calculator = () => {
     const [data2, setData] = useState({
         loanAmount: '',
         duration: '',
-        interest_rate: 0.5,
+        interest_rate: 0,
     });
 
     const [values, setValues] = useState({
-        loan_upper: 1000,
-        max_months_to_pay_back: 12,
+        loan_upper: 0,
+        max_months_to_pay_back: 0,
     });
 
     const handleChange = (e) => {
@@ -28,7 +28,6 @@ const Calculator = () => {
     }, [values]);
 
     const getData = async () => {
-        console.log('here');
         const res = await fetch("http://localhost:3000/", {
             method: "GET",
             headers: {
@@ -59,12 +58,11 @@ const Calculator = () => {
                 return;
             }
         }
-        console.log('here2');
-        setValues({
-            loan_upper: data.amount_loan_upper,
-            max_months_to_pay_back: data.max_months_to_pay_back,
-        });
-        data2.interest_rate = data.interest_rate;
+        setData(data);
+        console.log(data2);
+        if (data.loan_upper > 0) {
+            setValues(data);
+        }
         console.log(values);
     };
 
@@ -72,23 +70,29 @@ const Calculator = () => {
         if (data.valid_id == "valid" && data.valid_salary == "valid" && data.valid_expenses == "valid" && data.valid_name == "valid" && data.valid_age == "valid" && data.valid_nat == "valid" && data.valid_address == "valid" && data.valid_street == "valid" && data.valid_amount_other_loans == "valid" && data.valid_amount_reccuring_expenses == "valid" && data.valid_amount_total_insurances == "valid") {
             return true;
         }
-        console.log('here');
+        console.log('hereData');
         return false;
     }
 
     const checkHouse = (data) => {
-        if (data.valid_guar_salary == "valid" && data.valid_guar_expenses == "valid" && data.valid_guar_name == "valid" && data.valid_guar_age == "valid" && data.valid_guar_nat == "valid") {
-            return true;
+        if (data.guarantor == "no"){
+            if(data.valid_price_house == "valid" && data.valid_reno_or_buy == "valid"){
+                return true;
+            }
+        }else{
+            if (data.valid_price_house == "valid" && data.valid_reno_or_buy == "valid" && data.valid_guar_salary == "valid" && data.valid_guar_expenses == "valid" && data.valid_guar_name == "valid" && data.valid_guar_age == "valid" && data.valid_guar_nat == "valid") {
+                return true;
+            }
         }
-        console.log('here1');
+        console.log('herehouse');
         return false;
     }
 
     const checkStudent = (data) => {
-        if (data.valid_father_income == "valid" && data.valid_mother_income == "valid") {
+        if (data.valid_father_income == "valid" && data.valid_mother_income == "valid" && data.valid_fees == "valid" && data.valid_duration == "valid") {
             return true;
         }
-        console.log('here2');
+        console.log('herestudent');
         return false;
     }
 

@@ -30,7 +30,6 @@ const Student2 = () => {
         }else{
             setFlag(false);
         }
-        console.log(data);
     };
 
     const validate = () => {

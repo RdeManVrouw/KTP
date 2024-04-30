@@ -116,8 +116,29 @@ const ValidGuarId = () => {
         setNext(true);
     }
 
+    const getData = async () => {
+        const res = await fetch("http://localhost:3000/", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const data = await res.json();
+        console.log(data);
+        if (data.guarantor == "no") {
+           setFlag(true);
+        }
+    };
+
+
+        useState(() => {
+            getData();
+        }
+            , []);
+
     return (
         <>
+            {flag ? <Calculator></Calculator> : <>
                 {prev ? <ValidExpenses></ValidExpenses> : <>
                     {next ? <ValidGuarExpenses></ValidGuarExpenses> :
                         <>
@@ -185,6 +206,7 @@ const ValidGuarId = () => {
                         </>
                     }
                 </>}
+            </>}
 
 
         </>

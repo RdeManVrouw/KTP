@@ -18,11 +18,11 @@ const Student = () => {
         mother_income: '',
         father_income: '',
         duration: '',
+        fees: '',
     });
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
-        console.log(data);
     };
 
     const validate = () => {
@@ -33,6 +33,9 @@ const Student = () => {
             return false;
         }
         if (!data.duration) {
+            return false;
+        }
+        if (!data.fees) {
             return false;
         }
         return true;
@@ -98,6 +101,21 @@ const Student = () => {
             .then((data) => console.log(data));
     };
 
+    const sendData5 = () => {
+        fetch("http://localhost:3000/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "fees",
+                value: data.fees * 1,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+    };
+
     const [next, setNext] = useState(false);
     const [prev, setPrev] = useState(false);
 
@@ -115,6 +133,7 @@ const Student = () => {
         sendData2();
         sendData3();
         sendData4();
+        sendData5();
         setNext(true);
     }
 
@@ -138,6 +157,11 @@ const Student = () => {
                         </Row>
                         <Row className='mt-3'>
                             <Col>
+                                <FloatingLabel controlId="floatingTextarea" label="Tuition Fees" className='font'>
+                                    <Form.Control onChange={handleChange} type="number" name='fees' placeholder="" />
+                                </FloatingLabel>
+                            </Col>
+                            <Col>
                                 <FloatingLabel controlId="floatingTextarea" label="Duration of Studies (months)" className='font'>
                                     <Form.Control onChange={handleChange} type="number" name='duration' placeholder="" />
                                 </FloatingLabel>
@@ -157,7 +181,15 @@ const Student = () => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Row className='mt-5'>
+                        <Row className="g-2 mt-3">
+                            <Col md>
+                                <Form.Group controlId="formFile" className="mb-3 font">
+                                    <Form.Label className='font'>Proof of Enrolment</Form.Label>
+                                    <Form.Control type="file" />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row className='mt-3'>
                             <Col>
                                 <Button className="contact-btn rounded-pill font" onClick={handleBack} size="md">
                                     Back

@@ -57,7 +57,6 @@ const Pinfo = () => {
     };
 
     const sendData = () => {
-        console.log("pinfo");
         fetch("http://localhost:3000/", {
             method: "POST",
             headers: {
